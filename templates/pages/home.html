@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ request.tenant.name }}</h1>
+  <h3>Tenants</h3>
+  {% for tenant in tenants %}
+    <div>
+      <a href="//{{ tenant.primary_domain }}:8000">{{ tenant.name }}</a>
+    </div>
+  {% endfor %}
+{% endblock %}
