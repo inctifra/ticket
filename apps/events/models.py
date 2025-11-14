@@ -8,7 +8,9 @@ class Event(models.Model):
     """
 
     id = models.BigAutoField(primary_key=True)
-    tenant = models.ForeignKey("tenants.Client", on_delete=models.CASCADE, related_name="events")
+    tenant = models.ForeignKey(
+        "tenants.Client", on_delete=models.CASCADE, related_name="events"
+    )
     title = models.CharField(max_length=255)
     short_description = models.TextField(blank=True)
     start_at = models.DateTimeField()

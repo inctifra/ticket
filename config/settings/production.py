@@ -197,3 +197,10 @@ SPECTACULAR_SETTINGS["SERVERS"] = [
 ]
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+
+DJOSER = {
+    "TOKEN_MODEL": None,
+    # other settings
+}
+

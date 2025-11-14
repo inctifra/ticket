@@ -88,6 +88,8 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "webpack_loader",
     "django_browser_reload",
+    "djoser",
+    "rest_framework_simplejwt",
 ]
 
 LOCAL_APPS = [
@@ -385,6 +387,7 @@ SOCIALACCOUNT_PROVIDERS = {
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ),

@@ -77,6 +77,8 @@ dependencies = [
     "django-browser-reload>=1.20.0",
     "pyjwt>=2.10.1",
     "django-tenants>=3.9.0",
+    "djangorestframework-simplejwt>=5.5.1",
+    "djoser>=2.3.3",
 ]
 
 # ==== pytest ====
@@ -220,5 +222,6 @@ force-single-line = true
 
 [dependency-groups]
 dev = [
+    "ipykernel>=7.1.0",
     "rav>=0.1.1",
 ]

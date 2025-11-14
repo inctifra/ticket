@@ -16,7 +16,7 @@ class Client(TenantMixin):
     created_on = models.DateField(auto_now_add=True)
     auto_create_schema = True
     auto_drop_schema = True
-    
+
     def primary_domain(self):
         return Domain.objects.filter(tenant=self, is_primary=True).first()
 
