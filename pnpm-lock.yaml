@@ -17,6 +17,9 @@ importers:
       dotenv:
         specifier: ^17.2.2
         version: 17.2.2
+      fastbootstrap:
+        specifier: ^2.2.0
+        version: 2.2.0(@popperjs/core@2.11.8)
       jquery:
         specifier: ^3.7.1
         version: 3.7.1
@@ -1005,6 +1008,18 @@ packages:
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
 
+  '@thednp/event-listener@2.0.10':
+    resolution: {integrity: sha512-TH7YVKmoKg6GBLqZB+ETXObofcqJ/Tp5ycheolvYZMjLbMpzYf6MmOWTcBtx8+zrhWy8deV0hYkPvDFioDXdVQ==}
+    engines: {node: '>=16', pnpm: '>=8.6.0'}
+
+  '@thednp/position-observer@1.1.0':
+    resolution: {integrity: sha512-WgldP6Dltp2hJkSwp3+IVu05ClK/2IF33iftiQLb7UHcuO6eydjXiIUeOCClgCy3FDCGau2l/LRVg3oOO3Ytcg==}
+    engines: {node: '>=16', pnpm: '>=8.6.0'}
+
+  '@thednp/shorty@2.0.11':
+    resolution: {integrity: sha512-D+rLHt1l7c608yCuzXYJ75aDNWeMVbor+m1HO/XibhiWRbCpD8r6TUv3ayJI+feVfCnBNfrH+p6LSDn9l99uBA==}
+    engines: {node: '>=16', pnpm: '>=8.6.0'}
+
   '@types/body-parser@1.19.6':
     resolution: {integrity: sha512-HLFeCYgz89uk22N5Qg3dvGvsv46B8GLvKKo1zKG4NybA8U2DiEO3w9lqGg29t/tfLRJpJ6iQxnVw4OnB7MoM9g==}
 
@@ -1280,6 +1295,10 @@ packages:
 
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
+
+  bootstrap.native@5.1.6:
+    resolution: {integrity: sha512-bLveDBWhNLoFLsPctVo6yxSRQ1ysmKHBa+1FFMTQuruzTb3y7/InGSoe5lZdOiqZ4L0UOzpdbXMsI+bA5DoRew==}
+    engines: {node: '>=16', pnpm: '>=8.6.0'}
 
   bootstrap@5.3.8:
     resolution: {integrity: sha512-HP1SZDqaLDPwsNiqRqi5NcP0SSXciX2s9E+RyqJIIqGo+vJeN5AJVM98CXmW/Wux0nQ5L7jeWUdplCEf0Ee+tg==}
@@ -1726,6 +1745,9 @@ packages:
 
   fast-uri@3.1.0:
     resolution: {integrity: sha512-iPeeDKJSWf4IEOasVVrknXpaBV0IApz/gp7S2bb7Z4Lljbl2MGJRqInZiUrQwV16cpzw/D3S5j5Julj/gT52AA==}
+
+  fastbootstrap@2.2.0:
+    resolution: {integrity: sha512-31bJ6OaNntrUSZB4BVlO8mBJB45d7A0AxHchvdJQjp9CCK6qGx3c+byjcDqXgExXkG2miL+NW97Q6K7SWwwGWg==}
 
   fastest-levenshtein@1.0.16:
     resolution: {integrity: sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==}
@@ -4231,6 +4253,14 @@ snapshots:
 
   '@sinclair/typebox@0.27.8': {}
 
+  '@thednp/event-listener@2.0.10': {}
+
+  '@thednp/position-observer@1.1.0':
+    dependencies:
+      '@thednp/shorty': 2.0.11
+
+  '@thednp/shorty@2.0.11': {}
+
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
@@ -4564,6 +4594,12 @@ snapshots:
       multicast-dns: 7.2.5
 
   boolbase@1.0.0: {}
+
+  bootstrap.native@5.1.6:
+    dependencies:
+      '@thednp/event-listener': 2.0.10
+      '@thednp/position-observer': 1.1.0
+      '@thednp/shorty': 2.0.11
 
   bootstrap@5.3.8(@popperjs/core@2.11.8):
     dependencies:
@@ -5008,6 +5044,13 @@ snapshots:
   fast-deep-equal@3.1.3: {}
 
   fast-uri@3.1.0: {}
+
+  fastbootstrap@2.2.0(@popperjs/core@2.11.8):
+    dependencies:
+      bootstrap: 5.3.8(@popperjs/core@2.11.8)
+      bootstrap.native: 5.1.6
+    transitivePeerDependencies:
+      - '@popperjs/core'
 
   fastest-levenshtein@1.0.16: {}
 

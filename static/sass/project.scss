@@ -1,5 +1,7 @@
-@import 'custom_bootstrap_vars';
-@import '~bootstrap/scss/bootstrap';
+@import url("https://fonts.googleapis.com/css2?family=Smooch+Sans:wght@100..900&display=swap");
+@import "custom_bootstrap_vars";
+// @import "~bootstrap/scss/bootstrap";
+@import "fastbootstrap/src/scss/fastbootstrap";
 
 // project specific CSS goes here
 
@@ -33,4 +35,14 @@ $red: #b94a48;
   background-color: $pink;
   border-color: $dark-pink;
   color: $red;
+}
+
+body,
+html {
+  scroll-behavior: smooth;
+  // background-color: var(--bg-dark);
+  font-weight: 400;
+  // font-size: 75%;
+  font-family: var(--font-smooth-sans), sans-serif;
+  // color: var(--primary-color);
 }
