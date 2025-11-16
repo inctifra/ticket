@@ -1,8 +1,8 @@
 <header class="header">
   <div class="container">
-    <div class="header__container">
+    <div class="header__container py-3  w-100 d-flex align-items-center justify-content-between">
       <a href="#" class="header__logo"><h3>Ticket</h3></a>
-      <nav class="header__navlinks--content">
+      <nav class="header__navlinks--content d-none">
         <ul class="header__navlinks--links">
           <li class="header__navlink--item">
             <a href="#" class="navlink__item">
@@ -53,46 +53,51 @@
               <span>Categories</span>
               <span><i class="ti ti-chevron-down"></i></span>
             </a>
-            {% comment %} <ul class="navlink__submenu--links">
-              <li class="navlink__submenu--link">
-                <a href="#">
-                  <span><i class="ti ti-music"></i></span>
-                  <div>
-                    <span>Music & Concerts</span>
-                    <p>Live shows, artists, tours & concerts</p>
-                  </div>
-                </a>
-              </li>
-              <li class="navlink__submenu--link">
-                <a href="#">
-                  <span><i class="ti ti-bowling"></i></span>
-                  <div>
-                    <span>Upcoming</span>
-                    <p>Plan ahead for upcoming shows</p>
-                  </div>
-                </a>
-              </li>
-              <li class="navlink__submenu--link">
-                <a href="#">
-                  <span><i class="ti ti-map-pin"></i></span>
-                  <div>
-                    <span>Online</span>
-                    <p>Attend live events from anywhere</p>
-                  </div>
-                </a>
-              </li>
-            </ul> {% endcomment %}
 
             <nav class="navlink__submenu--group">
-                <ul class="navlink__group--item">
-                    <li>
-                        <a href="#">Music & Concerts</a>
-                    </li>
-                </ul>
+              <ul class="navlink__group--item">
+                <h3>Entertainment</h3>
+                <div>
+                  <li>
+                    <a href="#">Music & Concerts</a>
+                  </li>
+                  <li>
+                    <a href="#">Nightlife & Parties</a>
+                  </li>
+                </div>
+              </ul>
+              <ul class="navlink__group--item">
+                <h3>Culture, Lifestyle, Community</h3>
+                <div>
+                  <li>
+                    <a href="#">Arts & Culture</a>
+                  </li>
+                  <li>
+                    <a href="#">Food & Drink</a>
+                  </li>
+                  <li>
+                    <a href="#">Religion & Community</a>
+                  </li>
+                </div>
+              </ul>
             </nav>
+          </li>
+          <li class="header__navlink--item">
+            <a href="#" class="navlink__item">
+              <span><i class="ti ti-help"></i></span>
+              <span>Help & Support</span>
+            </a>
           </li>
         </ul>
       </nav>
+      <div class="header__container--menu d-flex d-md-none">
+        <ul class="header__container--actions">
+
+        </ul>
+        <button type="button" title="menu">
+            <i class="ti ti-menu"></i>
+        </button>
+      </div>
     </div>
   </div>
 </header>

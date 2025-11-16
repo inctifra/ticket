@@ -48,3 +48,18 @@ html {
   font-family: var(--font-smooth-sans), sans-serif;
   // color: var(--primary-color);
 }
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
