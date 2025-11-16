@@ -28,9 +28,10 @@
     {% endblock %}
   </head>
   <body class="{% block bodyclass %}
+
     {% endblock %}">
     {% block body %}
-      <div class="mb-1">
+      {% comment %} <div class="mb-1">
         <nav class="navbar navbar-expand-md" data-bs-theme="dark">
           <div class="container-fluid">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -67,24 +68,31 @@
             </div>
           </div>
         </nav>
-      </div>
-      <div class="container">
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert alert-dismissible {% if message.tags %}
+      </div> {% endcomment %}
+
+      {% block header %}
+        {% include 'components/header/index.html' %}
+      {% endblock %}
+
+      {% block main %}
+        <div class="container">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-dismissible {% if message.tags %}
+                  
+                  
                 alert-{{ message.tags }}
-              {% endif %}">
-              {{ message }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          {% endfor %}
-        {% endif %}
-        {% block main %}
+                {% endif %}">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
           {% block content %}
             <p>Use this document as a way to quick start any new project.</p>
           {% endblock %}
-        {% endblock %}
-      </div>
+        </div>
+      {% endblock %}
     {% endblock %}
     <!-- /container -->
     {% block modal %}
