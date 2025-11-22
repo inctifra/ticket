@@ -96,6 +96,8 @@ LOCAL_APPS = [
     "ifidel.users",
     "apps.tenants",
     "apps.events",
+    "apps.core",
+    "apps.plan"
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 SHARED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -220,6 +222,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "ifidel.users.context_processors.allauth_settings",
+                "apps.events.context_processors.load_core_context",
             ],
         },
     },

@@ -11,6 +11,7 @@
     "@types/node": "^24.5.2",
     "autoprefixer": "^10.4.0",
     "babel-loader": "^10.0.0",
+    "baseline-browser-mapping": "^2.8.30",
     "bootstrap": "^5.2.3",
     "copy-webpack-plugin": "^13.0.1",
     "css-loader": "^7.1.2",
@@ -48,12 +49,18 @@
   },
   "packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.1.0",
+    "@iconscout/unicons": "^4.2.0",
     "@tabler/icons-webfont": "^3.35.0",
     "axios": "^1.12.2",
+    "bootstrap-select": "^1.13.18",
     "css-minimizer-webpack-plugin": "^7.0.2",
     "dotenv": "^17.2.2",
     "fastbootstrap": "^2.2.0",
     "jquery": "^3.7.1",
+    "mixitup": "^3.3.2",
+    "owl.carousel": "^2.3.4",
+    "swiper": "^12.0.3",
     "terser-webpack-plugin": "^5.3.14",
     "webpackbar": "^7.0.0"
   }

@@ -4,19 +4,19 @@
 
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
-<html lang="{{ LANGUAGE_CODE }}" data-bs-theme="dark">
+<html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>
       {% block title %}
-        Ticket
+        Ticket.io – Tickets & Event Management System
       {% endblock %}
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="lms system" />
     <meta name="author" content="kwasa" />
-    <link rel="icon" href="{% webpack_static 'images/favicons/favicon.ico' %}" />
+    <link rel="icon" href="{% webpack_static 'images/logos/ticketless-icon.png' %}" />
     {% block css %}
       {% render_bundle 'project' 'css' %}
     {% endblock %}
@@ -31,72 +31,45 @@
 
     {% endblock %}">
     {% block body %}
-      {% comment %} <div class="mb-1">
-        <nav class="navbar navbar-expand-md" data-bs-theme="dark">
-          <div class="container-fluid">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <a class="navbar-brand" href="{% url 'home' %}">ifidel</a>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'about' %}">About</a>
-                </li>
-                {% if request.user.is_authenticated %}
-                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users:detail' request.user.pk %}">{% translate 'My Profile' %}</a>
-                  </li>
-                  <li class="nav-item">
-                    {# URL provided by django-allauth/account/urls.py #}
-                    <a class="nav-link" href="{% url 'account_logout' %}">{% translate 'Sign Out' %}</a>
-                  </li>
-                {% else %}
-                  {% if ACCOUNT_ALLOW_REGISTRATION %}
-                    <li class="nav-item">
-                      {# URL provided by django-allauth/account/urls.py #}
-                      <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate 'Sign Up' %}</a>
-                    </li>
-                  {% endif %}
-                  <li class="nav-item">
-                    {# URL provided by django-allauth/account/urls.py #}
-                    <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate 'Sign In' %}</a>
-                  </li>
-                {% endif %}
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </div> {% endcomment %}
-
       {% block header %}
         {% include 'components/header/index.html' %}
       {% endblock %}
-
       {% block main %}
-        <div class="container">
-          {% if messages %}
-            {% for message in messages %}
-              <div class="alert alert-dismissible {% if message.tags %}
+        <div class="wrapper">
+          <div>
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-dismissible {% if message.tags %}
+                    
+                    
                   
                   
-                alert-{{ message.tags }}
-                {% endif %}">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            {% endfor %}
-          {% endif %}
-          {% block content %}
-            <p>Use this document as a way to quick start any new project.</p>
-          {% endblock %}
+                  alert-{{ message.tags }}
+                  {% endif %}">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            {% comment %} <div class="container">
+              {% endcomment %}
+              {% block content %}
+                <p>Use this document as a way to quick start any new project.</p>
+              {% endblock %}
+              {% comment %}
+            </div> {% endcomment %}
+          </div>
         </div>
+      {% endblock %}
+
+      {% block footer %}
+        {% include 'components/footer/index.html' %}
       {% endblock %}
     {% endblock %}
     <!-- /container -->
     {% block modal %}
-
+      {% include 'modal/events.launch.html' %}
     {% endblock %}
     {% block inline_javascript %}
 

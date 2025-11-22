@@ -1,2 +1,3 @@
 onlyBuiltDependencies:
   - sharp
+  - ttf2woff2

@@ -1,103 +1,55 @@
+{% load webpack_static from webpack_loader %}
+
 <header class="header">
-  <div class="container">
-    <div class="header__container py-3  w-100 d-flex align-items-center justify-content-between">
-      <a href="#" class="header__logo"><h3>Ticket</h3></a>
-      <nav class="header__navlinks--content d-none">
-        <ul class="header__navlinks--links">
-          <li class="header__navlink--item">
-            <a href="#" class="navlink__item">
-              <span><i class="ti ti-home"></i></span>
-              <span>Home</span>
-            </a>
-          </li>
-          <li class="header__navlink--item">
-            <a href="#" class="navlink__item has-submenu">
-              <span><i class="ti ti-calendar-bolt"></i></span>
-              <span>Events</span>
-              <span><i class="ti ti-chevron-down"></i></span>
-            </a>
-            <ul class="navlink__submenu--links">
-              <li class="navlink__submenu--link">
-                <a href="#">
-                  <span><i class="ti ti-trending-up-3"></i></span>
-                  <div>
-                    <span>Trending</span>
-                    <p>Events everyone is talking about</p>
-                  </div>
-                </a>
-              </li>
-              <li class="navlink__submenu--link">
-                <a href="#">
-                  <span><i class="ti ti-bowling"></i></span>
-                  <div>
-                    <span>Upcoming</span>
-                    <p>Plan ahead for upcoming shows</p>
-                  </div>
-                </a>
-              </li>
-              <li class="navlink__submenu--link">
-                <a href="#">
-                  <span><i class="ti ti-map-pin"></i></span>
-                  <div>
-                    <span>Online</span>
-                    <p>Attend live events from anywhere</p>
-                  </div>
-                </a>
+  <div class="header-inner">
+    <nav class="navbar navbar-expand-lg bg-barren barren-head navbar fixed-top justify-content-sm-start pt-0 pb-0">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"><span class="close-btn" style="width: 40px;"><i class="ti ti-menu-2" style="width: 100%;"></i></span></button>
+        <a class="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 me-auto" href="{% url 'home' %}">
+          <div class="res-main-logo">
+            <img src="{% webpack_static 'images/logos/ticketless-icon.png' %}" alt="" />
+          </div>
+          <div class="main-logo" id="logo">
+            <img src="{% webpack_static 'images/logos/ticketless.png' %}" alt="" />
+            <img class="logo-inverse" src="{% webpack_static 'images/logos/dark-logo.svg' %}" alt="" />
+          </div>
+        </a>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header align-items-center justify-content-between">
+            <div class="offcanvas-logo" id="offcanvasNavbarLabel">
+              <img src="{% webpack_static 'images/logos/ticketless-icon.png' %}" alt="" />
+            </div>
+            <button type="button" class="close-btn" data-bs-dismiss="offcanvas" aria-label="Close"><i class="ti ti-x"></i></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end pe_5 flex-grow-1">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
               </li>
             </ul>
-          </li>
-
-          <li class="header__navlink--item">
-            <a href="#" class="navlink__item has-submenu">
-              <span><i class="ti ti-go-game"></i></span>
-              <span>Categories</span>
-              <span><i class="ti ti-chevron-down"></i></span>
-            </a>
-
-            <nav class="navlink__submenu--group">
-              <ul class="navlink__group--item">
-                <h3>Entertainment</h3>
-                <div>
-                  <li>
-                    <a href="#">Music & Concerts</a>
-                  </li>
-                  <li>
-                    <a href="#">Nightlife & Parties</a>
-                  </li>
-                </div>
+          </div>
+          <div class="offcanvas-footer">
+            <div class="offcanvas-social">
+              <h5>Follow Us</h5>
+              <ul class="social-links">
+                <li>
+                  <a href="#" class="social-link"><i class="fas fa-facebook"></i></a>
+                </li>
               </ul>
-              <ul class="navlink__group--item">
-                <h3>Culture, Lifestyle, Community</h3>
-                <div>
-                  <li>
-                    <a href="#">Arts & Culture</a>
-                  </li>
-                  <li>
-                    <a href="#">Food & Drink</a>
-                  </li>
-                  <li>
-                    <a href="#">Religion & Community</a>
-                  </li>
-                </div>
-              </ul>
-            </nav>
-          </li>
-          <li class="header__navlink--item">
-            <a href="#" class="navlink__item">
-              <span><i class="ti ti-help"></i></span>
-              <span>Help & Support</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="header__container--menu d-flex d-md-none">
-        <ul class="header__container--actions">
-
-        </ul>
-        <button type="button" title="menu">
-            <i class="ti ti-menu"></i>
-        </button>
+            </div>
+          </div>
+        </div>
+        <div class="right-header order-2">
+          <ul class="align-self-stretch">
+            <li>
+              <div class="night_mode_switch__btn">
+                <div id="night-mode" class="ti ti-sun"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </nav>
+    <div class="overlay"></div>
   </div>
 </header>

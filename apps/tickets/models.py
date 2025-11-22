@@ -132,6 +132,8 @@ class Ticket(models.Model):
     token = models.CharField(
         max_length=128,
         unique=True,
+        blank=True,
+        null=True
     )  # e.g., signed token or base32
     barcode_data = models.CharField(
         max_length=255,

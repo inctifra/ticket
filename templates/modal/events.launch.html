@@ -1,0 +1,68 @@
+<!-- Request Managed Event Modal -->
+<div class="modal fade" id="event-launch-request" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-none">
+        <h1 class="modal-title fs-5 fw-bold">Request Managed Event Setup</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form id="launchRequestForm" method="post" class="p-2 p-md-4">
+        {% csrf_token %}
+        <div class="modal-body px-4 py-4">
+          <p class="text-muted mb-4">We handle everything—ticketing, event setup, payments, and attendee support. Fill in your details below and our team will reach out to finalize your setup.</p>
+
+          <div class="row g-4">
+            <div class="col-md-6">
+              {{ request_event_launch_form.full_name.label_tag }}
+              {{ request_event_launch_form.full_name }}
+              <small class="text-muted">{{ request_event_launch_form.full_name.help_text }}</small>
+            </div>
+
+            <div class="col-md-6">
+              {{ request_event_launch_form.email.label_tag }}
+              {{ request_event_launch_form.email }}
+              <small class="text-muted">{{ request_event_launch_form.email.help_text }}</small>
+            </div>
+
+            <div class="col-md-6">
+              {{ request_event_launch_form.phone.label_tag }}
+              {{ request_event_launch_form.phone }}
+              <small class="text-muted">{{ request_event_launch_form.phone.help_text }}</small>
+            </div>
+
+            <div class="col-md-6">
+              {{ request_event_launch_form.subdomain.label_tag }}
+              <div class="input-group ">
+                {{ request_event_launch_form.subdomain }}
+                <span class="input-group-text">.ticketless.io</span>
+              </div>
+              <small class="text-muted">{{ request_event_launch_form.subdomain.help_text }}</small>
+            </div>
+
+            <div class="col-md-6">
+              {{ request_event_launch_form.event_type.label_tag }}
+              {{ request_event_launch_form.event_type }}
+              <small class="text-muted">{{ request_event_launch_form.event_type.help_text }}</small>
+            </div>
+            <div class="col-md-6">
+              {{ request_event_launch_form.plan.label_tag }}
+              {{ request_event_launch_form.plan }}
+              <small class="text-muted">{{ request_event_launch_form.plan.help_text }}</small>
+            </div>
+
+            <div class="col-12">
+              {{ request_event_launch_form.event_details.label_tag }}
+              {{ request_event_launch_form.event_details }}
+              <small class="text-muted">{{ request_event_launch_form.event_details.help_text }}</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="main-btn btn-hover py-3 px-5 d-flex align-items-center justify-content-center">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

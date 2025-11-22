@@ -33,14 +33,32 @@ module.exports = {
           from: path.resolve(__dirname, "../static/images/favicons"),
           to: "images/favicons",
         },
+        {
+          from: path.resolve(__dirname, "../static/images/logos"),
+          to: "images/logos",
+        },
+        {
+          from: path.resolve(__dirname, "../static/images/apps"),
+          to: "images/apps",
+        },
+        {
+          from: path.resolve(__dirname, "../static/images/icons"),
+          to: "images/icons",
+        },
+        {
+          from: path.resolve(__dirname, "../static/images/banner"),
+          to: "images/banner",
+        },
       ],
     }),
-    new Dotenv({ path: path.resolve(__dirname, "../.env") }), 
+    new Dotenv({ path: path.resolve(__dirname, "../.env") }),
     new ProvidePlugin({
-    $: "jquery",
-    jQuery: "jquery",
-    axios: "axios",
-  }),
+      $: "jquery",
+      jQuery: "jquery",
+      axios: "axios",
+      "window.jQuery": "jquery",
+      "window.$": "jquery",
+    }),
   ],
   module: {
     rules: [

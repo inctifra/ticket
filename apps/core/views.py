@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 
+from apps.plan.models import Plan
 from apps.tenants.models import Client
 
 
@@ -11,6 +12,7 @@ class HomeView(TemplateView):
         context["tenants"] = Client.objects.exclude(
             schema_name=self.request.tenant.schema_name
         )
+        context["plans"] = Plan.objects.all()
         return context
 
 
