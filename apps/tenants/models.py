@@ -14,6 +14,7 @@ class Client(TenantMixin):
         help_text="This will act as the subdomain. fidel in fidel.ticket.io",
     )
     created_on = models.DateField(auto_now_add=True)
+    description = models.TextField(blank=True)
     auto_create_schema = True
     auto_drop_schema = True
 

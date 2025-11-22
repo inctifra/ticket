@@ -12,6 +12,7 @@ module.exports = {
   entry: {
     project: path.resolve(__dirname, "../static/js/project"),
     vendors: path.resolve(__dirname, "../static/js/vendors"),
+    tenants: path.resolve(__dirname, "../static/js/tenants/index"),
   },
   output: {
     path: path.resolve(__dirname, "../assets/webpack_bundles/"),

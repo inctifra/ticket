@@ -358,7 +358,8 @@ body {
   display: none;
 }
 
-#night-mode {
+#night-mode,
+.profile__login > div  {
   padding: 0;
   font-size: 15px;
   background: #e8f7f7;
@@ -428,13 +429,13 @@ body {
   vertical-align: bottom;
 }
 
-.right-header ul li:first-child {
-  margin-right: 25px;
-}
+// .right-header ul li:first-child {
+//   margin-right: 25px;
+// }
 
-.right-header ul li:last-child {
-  margin-left: 22px;
-}
+// .right-header ul li:last-child {
+//   margin-left: 22px;
+// }
 
 .account-link {
   color: #1d1d1d;

@@ -2,7 +2,8 @@
 Night Mood
 ****************/
 
-.night-mode #night-mode {
+.night-mode #night-mode,
+.profile__login > div {
     padding: 0;
     font-size: 15px;
     background: #6ac045;

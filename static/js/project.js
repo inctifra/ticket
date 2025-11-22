@@ -19,6 +19,16 @@ function handleLaunchEvent() {
   $launchBtn.on("click", function () {
     modal.show();
   });
+
+  $launchModalForm.on("submit", async function(event) {
+    event.preventDefault();
+
+    const fm = $(this)
+    const fd = new FormData(fm.get(0));
+
+    console.log(Object.fromEntries(fd))
+
+  });
 }
 
 $(function () {

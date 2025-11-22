@@ -6,6 +6,34 @@ from django.db import models
 User = get_user_model()
 
 
+class Event(models.Model):
+    """
+    Event stored inside tenant schema, isolated per tenant.
+    This event is *NOT* visible to public schema without syncing.
+    """
+
+    title = models.CharField(max_length=255)
+    short_description = models.TextField(blank=True)
+    start_at = models.DateTimeField()
+    end_at = models.DateTimeField(null=True, blank=True)
+    venue_name = models.CharField(max_length=255, blank=True)
+    venue_address = models.TextField(blank=True)
+    is_published = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    capacity = models.PositiveIntegerField(null=True, blank=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["start_at"]),
+            models.Index(fields=["is_published"]),
+        ]
+        ordering = ["-start_at"]
+
+    def __str__(self):
+        return f"{self.title} ({self.start_at.date()})"
+
+
 class TicketType(models.Model):
     """
     Types of tickets for an event (e.g., single, group of 5, VIP).
@@ -13,9 +41,13 @@ class TicketType(models.Model):
     """
 
     id = models.BigAutoField(primary_key=True)
-    event_id = (
-        models.BigIntegerField()
-    )  # integer PK of public Event (denormalized link)
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="event_ticket_type",
+    )
     name = models.CharField(max_length=120)  # e.g., "Group (5)"
     description = models.TextField(blank=True)
     capacity = models.PositiveIntegerField(
@@ -130,10 +162,7 @@ class Ticket(models.Model):
     holder_name = models.CharField(max_length=255, blank=True)
     holder_email = models.EmailField(blank=True)
     token = models.CharField(
-        max_length=128,
-        unique=True,
-        blank=True,
-        null=True
+        max_length=128, unique=True, blank=True, null=True
     )  # e.g., signed token or base32
     barcode_data = models.CharField(
         max_length=255,
@@ -170,7 +199,7 @@ class TicketReservation(models.Model):
     order_placeholder = models.UUIDField(
         null=True,
         blank=True,
-    )  # link to pending order id
+    )
 
     class Meta:
         indexes = [models.Index(fields=["expires_at"])]

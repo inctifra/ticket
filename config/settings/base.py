@@ -55,7 +55,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
 ROOT_URLCONF = "config.urls"
-PUBLIC_SCHEMA_URLCONF = "config.urls"
+PUBLIC_SCHEMA_URLCONF = "config.public_urls"
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = "config.wsgi.application"
 
@@ -97,7 +97,8 @@ LOCAL_APPS = [
     "apps.tenants",
     "apps.events",
     "apps.core",
-    "apps.plan"
+    "apps.plan",
+    "apps.shared",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 SHARED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

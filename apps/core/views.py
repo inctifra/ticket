@@ -18,3 +18,9 @@ class HomeView(TemplateView):
 
 class AboutView(TemplateView):
     template_name = "pages/about.html"
+
+
+
+
+class PrivacyView(TemplateView):
+    template_name = "pages/privacy.html"
