@@ -1,8 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import "custom_bootstrap_vars";
 @import "~bootstrap/scss/bootstrap";
 @import "@tabler/icons-webfont/dist/tabler-icons.css";
 @import "base.scss";
+
 *,
 *::after,
 *::before {
@@ -96,4 +97,15 @@ button {
 #event-launch-request .form-select {
   border-radius: 10px;
   padding: 10px 14px;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+}
+.is-valid {
+  border-color: #198754 !important;
 }

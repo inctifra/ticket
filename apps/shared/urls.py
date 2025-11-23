@@ -1,7 +1,8 @@
 from django.urls import path
 
-from .views import PrivacyView
+from .views import validate_email_address
+
 app_name = "shared"
 urlpatterns = [
-    path("privacy/", PrivacyView.as_view(), name="privacy"),
+    path("verify-email-address/", validate_email_address, name="verify_email"),
 ]

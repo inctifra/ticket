@@ -6,4 +6,5 @@ $(async function() {
         import("./auth"),
         import("../../sass/tenants/project.scss")
     ])
-})
+});
+

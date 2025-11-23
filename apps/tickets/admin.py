@@ -1,8 +1,14 @@
+import csv
+import datetime
+
 from django.contrib import admin
 from django.contrib import messages
+from django.db import transaction
+from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.html import format_html
 
+from .models import Event
 from .models import InventoryBucket
 from .models import Order
 from .models import OrderItem
@@ -10,16 +16,6 @@ from .models import ScanLog
 from .models import Ticket
 from .models import TicketReservation
 from .models import TicketType
-
-from django.contrib import admin, messages
-from django.http import HttpResponse
-from django.utils import timezone
-from django.utils.html import format_html
-from django.db import transaction
-import csv
-import datetime
-
-from .models import Event
 
 # -------------------------------------------------------------------
 # INLINE DEFINITIONS
@@ -308,7 +304,6 @@ def export_as_csv(modeladmin, request, queryset):
     """
     Export selected events as CSV. You can expand columns as needed.
     """
-    meta = modeladmin.model._meta
     field_names = [
         "id",
         "title",
@@ -353,9 +348,6 @@ def sync_to_public(event):
     or create/update a row in the public schema).
     """
     # Example: enqueue a task, or call your sync function
-    # from .tasks import sync_event_to_public
-    # sync_event_to_public.delay(event.pk)
-    pass
 
 
 # ---------------------
@@ -444,7 +436,8 @@ class EventAdmin(admin.ModelAdmin):
     @transaction.atomic
     def save_model(self, request, obj, form, change):
         """
-        Called on save in admin. We can detect publish status transitions and trigger sync.
+        Called on save in admin. We can detect publish status transitions and
+        trigger sync.
         Keep heavy work out of the request: enqueue background jobs instead.
         """
         # determine if publish status changed
@@ -467,10 +460,7 @@ class EventAdmin(admin.ModelAdmin):
     # Optimize queryset (prefetch if you add related models later)
     # ---------------------
     def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        # if Event had related FK/ManyToMany (tickets, organizer), use select_related/prefetch_related here
-        # e.g., qs = qs.select_related('organizer').prefetch_related('tickets')
-        return qs
+        return super().get_queryset(request)
 
     # ---------------------
     # Optional: Add per-object admin permission checks

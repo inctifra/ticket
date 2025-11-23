@@ -1,5 +1,5 @@
-from django.views import View
 from django.http import JsonResponse
+from django.views import View
 
 
 class EventLaunchRequestView(View):

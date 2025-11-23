@@ -13,7 +13,8 @@
           "user-select",
           "flex",
           "scroll-behavior",
-          "scroll-behavior: smooth"
+          "scroll-behavior: smooth",
+          "-webkit-transform"
         ]
       }
     ]

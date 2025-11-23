@@ -106,7 +106,8 @@ TENANT_APPS = [
     # "django.contrib.auth",
     # "django.contrib.contenttypes",
     # "django.contrib.sessions",
-    "apps.tickets"
+    "apps.tickets",
+    "apps.dashboard.tenant",
 ]
 
 INSTALLED_APPS = list(SHARED_APPS) + [
@@ -341,6 +342,8 @@ CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 # django-allauth
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
+
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_LOGIN_METHODS = {"email"}
 # https://docs.allauth.org/en/latest/account/configuration.html

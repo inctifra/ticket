@@ -31,8 +31,3 @@ class Domain(DomainMixin):
             "This include the schema_name and the base domain. i.e fidel.ticket.io",
         ),
     )
-
-
-
-
-

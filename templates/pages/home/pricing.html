@@ -6,14 +6,15 @@
           <h4 class="fw-bold">{{ plan.get_name_display }}</h4>
         </div>
         <div class="card-body">
-          <h3 class="card-price">{{ plan.price_percentage }}% <small>/ ticket</small></h3>
+          <h3 class="card-price">
+            {{ plan.price_percentage }}% <small>/ ticket</small>
+          </h3>
           <p class="text-muted mb-3">{{ plan.description }}</p>
           <ul class="list-unstyled mb-4 text-start">
-            {% for feature in plan.features.all %}
-              <li>{{ feature.name }}</li>
-            {% endfor %}
+            {% for feature in plan.features.all %}<li>{{ feature.name }}</li>{% endfor %}
           </ul>
-          <a role="button" class="btn btn-hover {{ plan.button_class }} w-100 launch-event-btn">Get Started</a>
+          <a role="button"
+             class="btn btn-hover {{ plan.button_class }} w-100 launch-event-btn">Get Started</a>
         </div>
       </div>
     </div>

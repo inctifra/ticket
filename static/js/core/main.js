@@ -1,6 +1,7 @@
 import {Tooltip} from "bootstrap";
 import "./sliders";
 import "../components/theme";
+import "./vertical";
 
 var tooltipTriggerList = [].slice.call(
   document.querySelectorAll('[data-bs-toggle="tooltip"]')

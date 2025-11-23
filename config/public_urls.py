@@ -1,11 +1,12 @@
+from django.contrib import admin
 from django.urls import include
 from django.urls import path
-from .shared_urls import shared_urlpatterns
-from django.contrib import admin
 
+from .shared_urls import shared_urlpatterns
 
 urlpatterns = [
     path("", include("apps.core.urls")),
+    path("", include("apps.shared.urls", namespace="shared")),
 ]
 urlpatterns += [*shared_urlpatterns]
 

@@ -1,6 +1,8 @@
+from allauth.account.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import QuerySet
+from django.http import JsonResponse
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView
@@ -44,3 +46,18 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 user_redirect_view = UserRedirectView.as_view()
+
+
+class AjaxLoginView(LoginView):
+    def form_invalid(self, form):
+        if self.request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return JsonResponse({"errors": form.errors}, status=400)
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return JsonResponse(
+                {"success": True, "redirect_url": self.get_success_url()}
+            )
+        return response

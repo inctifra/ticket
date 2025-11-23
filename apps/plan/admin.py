@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Plan, Feature
+from .models import Feature
+from .models import Plan
 
 
 class FeatureInline(admin.TabularInline):

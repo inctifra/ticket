@@ -7,9 +7,6 @@ from django.utils import timezone
 from django.utils.html import format_html
 
 from .models import Event
-
-
-from django.contrib import admin
 from .models import EventLaunchRequest
 
 

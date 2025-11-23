@@ -203,4 +203,3 @@ DJOSER = {
     "TOKEN_MODEL": None,
     # other settings
 }
-

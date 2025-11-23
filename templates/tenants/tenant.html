@@ -1,30 +1,23 @@
 {% extends 'base.html' %}
+
 {% load render_bundle from webpack_loader %}
 
-{% block title %}
-  Ticketless.io | {{ request.tenant.name }}
-{% endblock %}
-
+{% block title %}Ticketless.io | {{ request.tenant.name }}{% endblock %}
 {% block css %}
   {{ block.super }}
-
   {% render_bundle 'tenants' 'css' %}
 {% endblock %}
-
 {% block javascript %}
   {{ block.super }}
-
   {% render_bundle 'tenants' 'js' attrs='defer' %}
 {% endblock %}
-
-{% block bodyclass %}
-  d-flex flex-column h-100
+{% block bodyclass %}d-flex flex-column h-100{% endblock %}
+{% block header %}
+  {% include 'components/header/tenants.html' %}
 {% endblock %}
-
 {% block footer %}
   {% include 'components/footer/tenant.html' %}
 {% endblock %}
-
 {% block modal %}
   {% include 'modal/tenants/login.html' %}
 {% endblock %}

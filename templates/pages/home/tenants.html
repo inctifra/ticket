@@ -14,7 +14,10 @@
             {% for tenant in tenants %}
               <div class="swiper-slide">
                 <div class="sponsor">
-                  <a href="//{{ tenant.primary_domain }}:8000"><img src="{% webpack_static 'images/apps/sponsor.png' %}" alt="{{ tenant.name }}" /></a>
+                  <a href="//{{ tenant.primary_domain }}:8000">
+                    <img src="{% webpack_static 'images/apps/sponsor.png' %}"
+                         alt="{{ tenant.name }}" />
+                  </a>
                 </div>
               </div>
             {% endfor %}

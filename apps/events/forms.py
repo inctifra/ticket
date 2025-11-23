@@ -1,7 +1,10 @@
 from django import forms
+from django.urls import reverse
 
 from apps.plan.models import Plan
-from .models import EventLaunchRequest, EVENT_TYPES
+
+from .models import EVENT_TYPES
+from .models import EventLaunchRequest
 
 
 class EventLaunchRequestForm(forms.ModelForm):
@@ -9,8 +12,9 @@ class EventLaunchRequestForm(forms.ModelForm):
         queryset=Plan.objects.all(),
         empty_label=None,
         widget=forms.Select(attrs={"class": "form-control"}),
-        label="Plan"
+        label="Plan",
     )
+
     class Meta:
         model = EventLaunchRequest
         fields = [
@@ -24,7 +28,7 @@ class EventLaunchRequestForm(forms.ModelForm):
         ]
         help_texts = {
             "full_name": "Tell us who to contact.",
-            "email": "We’ll send onboarding instructions here.",
+            "email": "We'll send onboarding instructions here.",
             "phone": "For direct communication & support.",
             "subdomain": "This will be your event portal URL.",
             "event_type": "Helps us prepare the right modules.",
@@ -43,6 +47,7 @@ class EventLaunchRequestForm(forms.ModelForm):
                     "class": "form-control",
                     "placeholder": "you@email.com",
                     "required": True,
+                    "data-verification-url": str(reverse("shared:verify_email")),
                 }
             ),
             "phone": forms.TextInput(

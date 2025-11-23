@@ -19,7 +19,7 @@
             <h4>Useful Links</h4>
             <ul class="footer-link-list">
               <li>
-                <a href="{% url 'privacy' %}" class="footer-link">Privacy Policy</a>
+                <a href="{% url 'tenants:privacy' %}" class="footer-link">Privacy Policy</a>
               </li>
               <li>
                 <a href="" class="footer-link">Terms &amp; Conditions</a>
@@ -51,8 +51,6 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="container">
-      {% include 'components/footer/common.html' %}
-    </div>
+    <div class="container">{% include 'components/footer/common.html' %}</div>
   </div>
 </footer>

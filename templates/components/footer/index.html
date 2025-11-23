@@ -55,8 +55,12 @@
           <div class="footer-content">
             <h4>Download Mobile App</h4>
             <div class="download-app-link">
-              <a href="#" class="download-btn"><img src="{% webpack_static 'images/apps/app-store.png' %}" alt="" /></a>
-              <a href="#" class="download-btn"><img src="{% webpack_static 'images/apps/google-play.png' %}" alt="" /></a>
+              <a href="#" class="download-btn">
+                <img src="{% webpack_static 'images/apps/app-store.png' %}" alt="" />
+              </a>
+              <a href="#" class="download-btn">
+                <img src="{% webpack_static 'images/apps/google-play.png' %}" alt="" />
+              </a>
             </div>
           </div>
         </div>
@@ -64,8 +68,6 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="container">
-      {% include 'components/footer/common.html' %}
-    </div>
+    <div class="container">{% include 'components/footer/common.html' %}</div>
   </div>
 </footer>
