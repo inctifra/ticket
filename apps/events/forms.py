@@ -7,11 +7,19 @@ from .models import EVENT_TYPES
 from .models import EventLaunchRequest
 
 RESERVED_SUBDOMAINS = {
-    "www", "admin", "api", "mail", "support", "test", "events", "ticketless"
+    "www",
+    "admin",
+    "api",
+    "mail",
+    "support",
+    "test",
+    "events",
+    "ticketless",
 }
 
 
-MINIMUM_SUBDOMAIN_LENGTH=3
+MINIMUM_SUBDOMAIN_LENGTH = 3
+
 
 class EventLaunchRequestForm(forms.ModelForm):
     plan = forms.ModelChoiceField(
@@ -85,9 +93,7 @@ class EventLaunchRequestForm(forms.ModelForm):
 
         if not re.match(r"^[a-z0-9-]+$", subdomain):
             msg = "Subdomain can only contain letters, numbers, and hyphens."
-            raise forms.ValidationError(
-                msg
-            )
+            raise forms.ValidationError(msg)
 
         if not re.match(r"^[a-z0-9].*[a-z0-9]$", subdomain):
             msg = "Subdomain must start and end with a letter or number."
@@ -106,3 +112,56 @@ class EventLaunchRequestForm(forms.ModelForm):
             raise forms.ValidationError(msg)
 
         return subdomain
+
+
+class EventLaunchRequestUpdateForm(forms.ModelForm):
+    class Meta:
+        model = EventLaunchRequest
+        fields = [
+            "full_name",
+            "email",
+            "phone",
+            "subdomain",
+            "event_type",
+            "plan",
+            "event_details",
+            "status",
+            "handled",
+            "managed_by",
+        ]
+        widgets = {
+            "full_name": forms.TextInput(
+                attrs={"readonly": True, "class": "form-control"}
+            ),
+            "email": forms.EmailInput(
+                attrs={"readonly": True, "class": "form-control"}
+            ),
+            "phone": forms.TextInput(attrs={"readonly": True, "class": "form-control"}),
+            "subdomain": forms.TextInput(
+                attrs={"readonly": True, "class": "form-control"}
+            ),
+            "event_type": forms.TextInput(
+                attrs={"readonly": True, "class": "form-control"}
+            ),
+            "plan": forms.TextInput(attrs={"readonly": True, "class": "form-control"}),
+            "event_details": forms.Textarea(
+                attrs={"readonly": True, "class": "form-control", "rows": 4}
+            ),
+            "status": forms.Select(attrs={"class": "form-control"}),
+            "handled": forms.CheckboxInput(
+                attrs={"class": "form-check-input", "checked": True}
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.manager = kwargs.pop("manager")
+        super().__init__(*args, **kwargs)
+        # Set initial value for managed_by if needed
+        if self.manager and "managed_by" in self.fields:
+            self.fields["managed_by"].initial = self.manager.pk
+        for field_name in self.fields:
+            if field_name not in ["status", "handled", "managed_by"]:
+                self.fields[field_name].disabled = True
+        self.fields["managed_by"].widget = forms.HiddenInput()
+        if self.instance:
+            self.fields["status"].initial = self.instance.status

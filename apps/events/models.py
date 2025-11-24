@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from django.db import models
 from django.utils import timezone
+from ifidel.users.models import Profile
 
 EVENT_TYPES = [
     ("concert", "Concert / Festival"),
@@ -21,6 +22,22 @@ STATUS_CHOICES = [
 
 
 class EventLaunchRequest(models.Model):
+    EVENT_TYPES = [
+        ("concert", "Concert / Festival"),
+        ("conference", "Conference / Expo"),
+        ("training", "Training / Workshop"),
+        ("church", "Church / Charity Event"),
+        ("sports", "Sports / Tournament"),
+        ("other", "Other"),
+    ]
+
+    STATUS_CHOICES = [
+        ("G", "Granted"),
+        ("P", "Processing"),
+        ("D", "Denied"),
+        ("C", "Cancelled"),
+    ]
+
     full_name = models.CharField(max_length=255)
     plan = models.ForeignKey(
         "plan.Plan",
@@ -28,6 +45,13 @@ class EventLaunchRequest(models.Model):
         null=True,
         blank=True,
         related_name="plan",
+    )
+    managed_by = models.ForeignKey(
+        Profile,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="event_requests",
     )
     email = models.EmailField(max_length=255)
     phone = models.CharField(max_length=20)

@@ -17,4 +17,3 @@ class EventLaunchRequestView(View):
                 safe=False,
             )
         return JsonResponse({"errors": form.errors}, status=400)
-

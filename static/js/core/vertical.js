@@ -1,37 +1,34 @@
 "use strict";
-var tid = setInterval(function () {
-try {
-      if ("complete" === document.readyState) {
-    clearInterval(tid);
-    var a = document.querySelector.bind(document),
-      b = document.querySelector(".vertical_nav"),
-      c = document.querySelector(".wrapper"),
-      d = document.getElementById("js-menu"),
-      e = d.querySelectorAll(".menu--item__has_sub_menu");
-    (a(".toggle_menu").onclick = function () {
-      b.classList.toggle("vertical_nav__opened"),
-        c.classList.toggle("toggle-content");
-    }),
-      (a(".collapse_menu").onclick = function () {
-        b.classList.toggle("vertical_nav__minify"),
-          c.classList.toggle("wrapper__minify");
-        for (var a = 0; a < e.length; a++)
-          e[a].classList.remove("menu--subitens__opened");
-      });
-    for (var f = 0; f < e.length; f++)
-      e[f].classList.contains("menu--item__has_sub_menu") &&
-        e[f].querySelector(".menu--link").addEventListener(
-          "click",
-          function (a) {
-            for (var b = 0; b < e.length; b++)
-              a.target.offsetParent != e[b] &&
-                e[b].classList.remove("menu--subitens__opened");
-            a.target.offsetParent.classList.toggle("menu--subitens__opened");
-          },
-          !1
-        );
-  }
-} catch (error) {
-    
-}
-}, 100);
+import $ from "jquery"
+
+$(function () {
+    try {
+        const $verticalNav = $(".vertical_nav");
+        const $wrapper = $(".wrapper");
+        const $menu = $("#js-menu");
+        const $submenuItems = $menu.find(".menu--item__has_sub_menu");
+
+        $(".toggle_menu").on("click", function () {
+            $verticalNav.toggleClass("vertical_nav__opened");
+            $wrapper.toggleClass("toggle-content");
+        });
+        $(".collapse_menu").on("click", function () {
+            $verticalNav.toggleClass("vertical_nav__minify");
+            $wrapper.toggleClass("wrapper__minify");
+            $submenuItems.removeClass("menu--subitens__opened");
+        });
+
+        $submenuItems.each(function () {
+            const $item = $(this);
+
+            $item.find(".menu--link").on("click", function (e) {
+                e.preventDefault();
+                $submenuItems.not($item).removeClass("menu--subitens__opened");
+                $item.toggleClass("menu--subitens__opened");
+            });
+        });
+
+    } catch (error) {
+        console.error(error);
+    }
+});

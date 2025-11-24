@@ -90,6 +90,7 @@ THIRD_PARTY_APPS = [
     "django_browser_reload",
     "djoser",
     "rest_framework_simplejwt",
+    "widget_tweaks",
 ]
 
 LOCAL_APPS = [

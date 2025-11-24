@@ -1,10 +1,86 @@
-<div class="offcanvas offcanvas-center-custom" tabindex="-1" id="eventCanvas">
+{% load widget_tweaks %}
+
+<div class="offcanvas offcanvas-center-custom" data-canvas-name="event-request" tabindex="-1" id="eventCanvas{{ event.id }}">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Event Setup</h5>
+    <h5 class="offcanvas-title d-flex align-items-center justify-content-between gap-3">
+      <span>Process Event Setup Request</span>
+      <div class="d-flex align-items-center justify-content-center gap-1">
+        <span>Status:</span>
+        {% if event.status == 'P' %}
+          <span class="badge bg-primary">{{ event.get_status_display }}</span>
+        {% elif event.status == 'G' %}
+          <span class="badge bg-success">{{ event.get_status_display }}</span>
+        {% elif event.status == 'D' %}
+          <span class="badge bg-danger">{{ event.get_status_display }}</span>
+        {% elif event.status == 'C' %}
+          <span class="badge bg-warning text-dark">{{ event.get_status_display }}</span>
+        {% else %}
+          <span class="badge bg-secondary">{{ event.get_status_display }}</span>
+        {% endif %}
+      </div>
+    </h5>
+
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
   </div>
 
   <div class="offcanvas-body">
-    <!-- Your content form goes here -->
+    <form method="post"
+    action="{% url 'api:api-events:event_request_review' event.pk %}"
+    class="eventCanvasForm-eventCanvas{{ event.id }}" data-event-form-id="{{ event.id }}">
+      {% csrf_token %}
+      <div class="row mb-3">
+        <div class="col-md-6 col-12">
+          {{ form.full_name.label_tag }}
+          {% render_field form.full_name value=event.full_name id='id_full_name_update' %}
+        </div>
+        <div class="col-md-6 col-12">
+          {{ form.email.label_tag }}
+          {% render_field form.email value=event.email id='id_email_update' %}
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 col-12">
+          {{ form.phone.label_tag }}
+          {% render_field form.phone value=event.phone id='id_phone_update' %}
+        </div>
+
+        <div class="col-md-6 col-12">
+          {{ form.subdomain.label_tag }}
+          <div class="input-group mb-3">
+            {% render_field form.subdomain value=event.subdomain id='id_subdomain_update' %}
+            <span class="input-group-text" id="basic-addon2">.ticketless.io</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 col-12">
+          {{ form.event_type.label_tag }}
+          {% render_field form.event_type value=event.get_event_type_display id='id_event_type_update' %}
+        </div>
+
+        <div class="col-md-6 col-12">
+          {{ form.plan.label_tag }}
+          {% render_field form.plan value=event.plan id='id_plan_update' %}
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6 col-12">
+          {{ form.status.label_tag }}
+          {% render_field form.status value=event.status id='id_status_update' %}
+        </div>
+
+        <div class="col-md-6 col-12">
+          {{ form.handled.label_tag }}
+          <br />
+          {% render_field form.handled value=event.handled id='id_handled_update' style='width: 40px !important; height: 35px !important;' %}
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="main-btn w-100">Save Changes</button>
+    </form>
   </div>
 </div>

@@ -41,6 +41,7 @@
               {% for message in messages %}
                 <div class="alert alert-dismissible {% if message.tags %}
                     
+                    
                     alert-{{ message.tags }}
                   {% endif %}">
                   {{ message }}
@@ -68,7 +69,7 @@
     {% endblock %}
 
     {% block offcanvas %}
-      {% include 'offcanvas/events.request.html' %}
+
     {% endblock %}
 
     {% block inline_javascript %}

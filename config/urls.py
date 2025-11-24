@@ -4,9 +4,7 @@ from django.urls import path
 
 from .shared_urls import shared_urlpatterns
 
-urlpatterns = [
-    path("", include("apps.tenants.urls", namespace="tenants"))
-]
+urlpatterns = [path("", include("apps.tenants.urls", namespace="tenants"))]
 urlpatterns += [*shared_urlpatterns]
 
 admin.site.site_header = "Ticketless Tenant Panel"

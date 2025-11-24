@@ -1,2 +1,4 @@
+from django.urls import path, include
 
-urlpatterns = []
+
+urlpatterns = [path("", include("apps.api.events.urls", namespace="api-events"))]
