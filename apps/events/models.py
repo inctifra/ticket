@@ -46,7 +46,8 @@ class EventLaunchRequest(models.Model):
     def save(self, *args, **kwargs):
         # Set default expiry to 3 days after creation if not set
         if not self.expires_at:
-            self.expires_at = self.created_at + timedelta(days=3)
+            now = timezone.now()
+            self.expires_at = now + timedelta(days=3)
 
         # Automatically mark handled if status is Granted, Denied, or Cancelled
         if self.status in ["G", "D", "C"]:

@@ -10,4 +10,5 @@ urlpatterns = [
     path("", TenantHomeView.as_view(), name="home"),
     path("privacy/", PrivacyView.as_view(), name="privacy"),
     path("dashboard/", include("apps.dashboard.tenant.urls", namespace="dashboard")),
+    # path("", include("apps.shared.urls", namespace="shared"))
 ]

@@ -1,11 +1,17 @@
 from django import forms
 from django.urls import reverse
-
+import re
 from apps.plan.models import Plan
 
 from .models import EVENT_TYPES
 from .models import EventLaunchRequest
 
+RESERVED_SUBDOMAINS = {
+    "www", "admin", "api", "mail", "support", "test", "events", "ticketless"
+}
+
+
+MINIMUM_SUBDOMAIN_LENGTH=3
 
 class EventLaunchRequestForm(forms.ModelForm):
     plan = forms.ModelChoiceField(
@@ -47,7 +53,7 @@ class EventLaunchRequestForm(forms.ModelForm):
                     "class": "form-control",
                     "placeholder": "you@email.com",
                     "required": True,
-                    "data-verification-url": str(reverse("shared:verify_email")),
+                    "data-verification-url": "/events/verify-email-address/",
                 }
             ),
             "phone": forms.TextInput(
@@ -73,3 +79,30 @@ class EventLaunchRequestForm(forms.ModelForm):
                 }
             ),
         }
+
+    def clean_subdomain(self):
+        subdomain = self.cleaned_data["subdomain"].lower().strip()
+
+        if not re.match(r"^[a-z0-9-]+$", subdomain):
+            msg = "Subdomain can only contain letters, numbers, and hyphens."
+            raise forms.ValidationError(
+                msg
+            )
+
+        if not re.match(r"^[a-z0-9].*[a-z0-9]$", subdomain):
+            msg = "Subdomain must start and end with a letter or number."
+            raise forms.ValidationError(msg)
+
+        if len(subdomain) < MINIMUM_SUBDOMAIN_LENGTH:
+            msg = "Subdomain must be at least 3 characters long."
+            raise forms.ValidationError(msg)
+
+        if subdomain in RESERVED_SUBDOMAINS:
+            msg = f"'{subdomain}' is reserved and cannot be used as a subdomain."
+            raise forms.ValidationError(msg)
+
+        if EventLaunchRequest.objects.filter(subdomain=subdomain).exists():
+            msg = "This subdomain is already taken."
+            raise forms.ValidationError(msg)
+
+        return subdomain

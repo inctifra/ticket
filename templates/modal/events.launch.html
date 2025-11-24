@@ -6,12 +6,14 @@
         <h1 class="modal-title fs-5 fw-bold">Request Managed Event Setup</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <form id="launchRequestForm" method="post" class="p-2 p-md-4">
+      <form id="launchRequestForm" action="{% url 'events:launch_view' %}" method="post" class="p-2 p-md-4">
         {% csrf_token %}
+
         <div class="modal-body px-4 py-4">
-          <p class="text-muted mb-4">
-            We handle everything—ticketing, event setup, payments, and attendee support. Fill in your details below and our team will reach out to finalize your setup.
-          </p>
+          <p class="text-muted mb-4">We handle everything—ticketing, event setup, payments, and attendee support. Fill in your details below and our team will reach out to finalize your setup.</p>
+
+          <div class="response" id="response"></div>
+
           <div class="row g-4">
             <div class="col-md-6">
               {{ request_event_launch_form.full_name.label_tag }}
@@ -30,7 +32,7 @@
             </div>
             <div class="col-md-6">
               {{ request_event_launch_form.subdomain.label_tag }}
-              <div class="input-group ">
+              <div class="input-group">
                 {{ request_event_launch_form.subdomain }}
                 <span class="input-group-text">.ticketless.io</span>
               </div>
@@ -54,9 +56,9 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit"
-                  class="main-btn btn-hover py-3 px-5 d-flex align-items-center justify-content-center">
-            Submit Request
+          <button type="submit" class="main-btn btn-hover py-3 px-5 d-flex align-items-center gap-3">
+            <div class="spinner-border d-none" role="status"></div>
+            <div>Submit request</div>
           </button>
         </div>
       </form>

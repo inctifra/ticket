@@ -10,4 +10,5 @@ urlpatterns = [
     path("about/", AboutView.as_view(), name="about"),
     path("privacy/", PrivacyView.as_view(), name="privacy"),
     path("dashboard/", include("apps.core.dashboard.urls", namespace="dashboard")),
+    path("events/", include("apps.events.urls", namespace="events")),
 ]

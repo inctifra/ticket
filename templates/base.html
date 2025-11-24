@@ -9,13 +9,14 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>
-      {% block title %}Ticket.io – Tickets & Event Management System{% endblock %}
+      {% block title %}
+        Ticket.io – Tickets & Event Management System
+      {% endblock %}
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="lms system" />
     <meta name="author" content="kwasa" />
-    <link rel="icon"
-          href="{% webpack_static 'images/logos/ticketless-icon.png' %}" />
+    <link rel="icon" href="{% webpack_static 'images/logos/ticketless-icon.png' %}" />
     {% block css %}
       {% render_bundle 'project' 'css' %}
     {% endblock %}
@@ -26,7 +27,9 @@
       {% render_bundle 'project' 'js' attrs='defer' %}
     {% endblock %}
   </head>
-  <body class="{% block bodyclass %}  {% endblock %}">
+  <body class="{% block bodyclass %}
+
+    {% endblock %}">
     {% block body %}
       {% block header %}
         {% include 'components/header/index.html' %}
@@ -36,19 +39,21 @@
           <div>
             {% if messages %}
               {% for message in messages %}
-                <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                <div class="alert alert-dismissible {% if message.tags %}
+                    
+                    alert-{{ message.tags }}
+                  {% endif %}">
                   {{ message }}
-                  <button type="button"
-                          class="btn-close"
-                          data-bs-dismiss="alert"
-                          aria-label="Close"></button>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
               {% endfor %}
             {% endif %}
             {% comment %} <div class="container">
-            {% endcomment %}
-            {% block content %}<p>Use this document as a way to quick start any new project.</p>{% endblock %}
-            {% comment %}
+              {% endcomment %}
+              {% block content %}
+                <p>Use this document as a way to quick start any new project.</p>
+              {% endblock %}
+              {% comment %}
             </div> {% endcomment %}
           </div>
         </div>
@@ -61,6 +66,13 @@
     {% block modal %}
       {% include 'modal/events.launch.html' %}
     {% endblock %}
-    {% block inline_javascript %}{% endblock %}
+
+    {% block offcanvas %}
+      {% include 'offcanvas/events.request.html' %}
+    {% endblock %}
+
+    {% block inline_javascript %}
+
+    {% endblock %}
   </body>
 </html>
