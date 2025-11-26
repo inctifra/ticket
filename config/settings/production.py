@@ -151,16 +151,16 @@ ANYMAIL = {
 # https://docs.djangoproject.com/en/dev/ref/settings/#logging
 # See https://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
-if not DEBUG:
-    try:
-        from . import logging as prod_logging
+# if not DEBUG:
+try:
+    from . import logging as prod_logging
 
-        for attr in dir(prod_logging):
-            if attr.isupper():
-                globals()[attr] = getattr(prod_logging, attr)
-    except ImportError as e:
-        msg = "Production security settings not found!"
-        raise ImportError(msg) from e
+    for attr in dir(prod_logging):
+        if attr.isupper():
+            globals()[attr] = getattr(prod_logging, attr)
+except ImportError as e:
+    msg = "Production security settings not found!"
+    raise ImportError(msg) from e
 
 
 # Sentry

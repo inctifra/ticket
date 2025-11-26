@@ -12,5 +12,5 @@ class DomainStackedInlineAdmin(admin.StackedInline):
 
 @admin.register(Client)
 class ClientAdmin(TenantAdminMixin, admin.ModelAdmin):
-    list_display = ["schema_name", "name", "created_on"]
+    list_display = ["schema_name", "name", "created_on", "owner", "manager"]
     inlines = [DomainStackedInlineAdmin]

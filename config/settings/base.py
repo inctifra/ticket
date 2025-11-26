@@ -175,6 +175,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "apps.tenants.middleware.CurrentUserMiddleware",
 ]
 
 # STATIC

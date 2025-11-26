@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django_tenants.models import DomainMixin
 from django_tenants.models import TenantMixin
@@ -17,6 +18,22 @@ class Client(TenantMixin):
     description = models.TextField(blank=True)
     auto_create_schema = True
     auto_drop_schema = True
+    manager = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="managed_tenants",
+        help_text="User responsible for managing this tenant."
+    )
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="owned_tenants",
+        help_text="User who owns this tenant."
+    )
 
     def primary_domain(self):
         return Domain.objects.filter(tenant=self, is_primary=True).first()
