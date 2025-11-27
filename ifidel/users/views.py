@@ -5,6 +5,7 @@ from django.db.models import QuerySet
 from django.http import JsonResponse
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.views import View
 from django.views.generic import DetailView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
@@ -49,15 +50,13 @@ user_redirect_view = UserRedirectView.as_view()
 
 
 class AjaxLoginView(LoginView):
-    def form_invalid(self, form):
-        if self.request.headers.get("x-requested-with") == "XMLHttpRequest":
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request=request)
+        if not form.is_valid():
             return JsonResponse({"errors": form.errors}, status=400)
-        return super().form_invalid(form)
+        return JsonResponse({"success": True})
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        if self.request.headers.get("x-requested-with") == "XMLHttpRequest":
-            return JsonResponse(
-                {"success": True, "redirect_url": self.get_success_url()}
-            )
-        return response
+
+
+
+ajax_login_view = AjaxLoginView.as_view()

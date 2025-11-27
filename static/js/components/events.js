@@ -7,8 +7,8 @@ function loadEventsStatChart() {
 
   async function loadEventStatusChart() {
     const canvasEl = document.querySelector("#eventStatusChart");
+    if(!canvasEl) return;
     const endpoint = canvasEl.dataset.endpoint;
-
     const response = await fetch(endpoint);
     const result = await response.json();
 

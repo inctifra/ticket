@@ -7,7 +7,7 @@
         <h5 class="modal-title text-center">Amin Login</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <form method="POST" action="{% url 'account_login' %}" class="p-4">
+      <form method="POST" action="{% url 'users:ajax_login' %}" class="p-4">
         {% csrf_token %}
         <div class="modal-body">
           {% if login_form.errors %}<div class="alert alert-danger">{{ login_form.non_field_errors }}</div>{% endif %}

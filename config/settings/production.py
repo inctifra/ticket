@@ -178,13 +178,13 @@ integrations = [
     CeleryIntegration(),
     RedisIntegration(),
 ]
-sentry_sdk.init(
-    dsn=SENTRY_DSN,
-    integrations=integrations,
-    environment=env("SENTRY_ENVIRONMENT", default="production"),
-    traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE", default=0.0),
-    send_default_pii=True,
-)
+# sentry_sdk.init(
+#     dsn=SENTRY_DSN,
+#     integrations=integrations,
+#     environment=env("SENTRY_ENVIRONMENT", default="production"),
+#     traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE", default=0.0),
+#     send_default_pii=True,
+# )
 
 # django-rest-framework
 # -------------------------------------------------------------------------------
