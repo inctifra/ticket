@@ -55,6 +55,11 @@ class EventLaunchRequest(models.Model):
     )
     email = models.EmailField(max_length=255)
     phone = models.CharField(max_length=20)
+    password = models.CharField(
+        max_length=128,
+        blank=True,
+        help_text="This is the password you will use to login into your subdomain",
+    )
     subdomain = models.CharField(max_length=50, unique=True)
     event_type = models.CharField(max_length=50, choices=EVENT_TYPES)
     event_details = models.TextField(blank=True)

@@ -13,6 +13,8 @@ class HomeView(TemplateView):
         context["tenants"] = Client.objects.exclude(
             schema_name=self.request.tenant.schema_name
         )
+        print(Client.objects.all())
+        print("Tenant", self.request.tenant.schema_name)
         context["plans"] = Plan.objects.all()
         print("User", get_current_user())
         return context

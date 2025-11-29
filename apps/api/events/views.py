@@ -8,6 +8,9 @@ from apps.events.forms import EventLaunchRequestUpdateForm
 from apps.events.models import EventLaunchRequest
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from tenant_users.tenants.tasks import provision_tenant
+from ifidel.users.models import User
+from django_tenants.utils import tenant_context
 
 
 def event_status_chart(request):
@@ -43,12 +46,38 @@ class AdminProcessEventRequestView(View):
             return JsonResponse(form.errors, safe=False, status=400)
 
         event_request = form.save()
+
+        client, created = User.objects.get_or_create(
+            email=form.cleaned_data.get("email"),
+            defaults={"name": form.cleaned_data.get("full_name")},
+        )
+
+        if created:
+            client.set_password(form.cleaned_data.get("password", "phone"))
+            client.save()
         if not event_request.managed_by:
             event_request.managed_by = request.user.profile
             event_request.save()
+        try:
+            tenant, domain = provision_tenant(
+                form.cleaned_data.get("full_name"),
+                form.cleaned_data.get("subdomain"),
+                client,
+                tenant_type="tenant_type"
+            )
+            with tenant_context(tenant):
+                User.objects.create_user(
+                    email=form.cleaned_data.get("email"),
+                    password=form.cleaned_data.get("password", "phone")
+                )
+                client.profile.save()
+        except (Exception, ValueError) as e:
+            return JsonResponse({"details": str(e)}, safe=False, status=400)
 
         return JsonResponse(
             {"detail": f"Updated to status {event_request.get_status_display()}"},
             safe=False,
             status=200,
         )
+
+

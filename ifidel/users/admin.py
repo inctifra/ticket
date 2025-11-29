@@ -1,7 +1,7 @@
 from allauth.account.decorators import secure_admin_login
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.auth import admin as auth_admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
 from .forms import UserAdminChangeForm
@@ -17,38 +17,35 @@ if getattr(settings, "DJANGO_ADMIN_FORCE_ALLAUTH", True):
 
 
 @admin.register(User)
-class UserAdmin(auth_admin.UserAdmin):
+class UserAdmin(BaseUserAdmin):
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
+
+    list_display = ("email", "name", "is_active")
+    list_filter = ("is_active",)
+
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        (_("Personal info"), {"fields": ("name",)}),
-        (
-            _("Permissions"),
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                ),
-            },
-        ),
-        (_("Important dates"), {"fields": ("last_login", "date_joined")}),
+        ("Personal info", {"fields": ("name",)}),
+        ("Tenant Info", {"fields": ("is_active",)}),
+        # ("Permissions", {"fields": ("groups", "user_permissions")}),
     )
-    list_display = ["email", "name", "is_superuser"]
-    search_fields = ["name"]
-    ordering = ["id"]
+
     add_fieldsets = (
         (
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "password1", "password2"),
+                "fields": ("email", "name", "password1", "password2"),
             },
         ),
     )
+
+    search_fields = ("email", "name")
+    ordering = ("email",)
+    filter_horizontal = ()
+
+
 
 
 @admin.register(Profile)

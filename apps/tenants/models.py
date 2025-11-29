@@ -3,9 +3,9 @@ from django.db import models
 from django_tenants.models import DomainMixin
 from django_tenants.models import TenantMixin
 from django_tenants.postgresql_backend.base import _check_schema_name
+from tenant_users.tenants.models import TenantBase
 
-
-class Client(TenantMixin):
+class Client(TenantBase):
     name = models.CharField(max_length=100)
     schema_name = models.CharField(
         max_length=63,
@@ -17,7 +17,6 @@ class Client(TenantMixin):
     created_on = models.DateField(auto_now_add=True)
     description = models.TextField(blank=True)
     auto_create_schema = True
-    auto_drop_schema = True
     manager = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,

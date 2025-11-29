@@ -24,9 +24,7 @@
   </div>
 
   <div class="offcanvas-body">
-    <form method="post"
-    action="{% url 'api:api-events:event_request_review' event.pk %}"
-    class="eventCanvasForm-eventCanvas{{ event.id }}" data-event-form-id="{{ event.id }}">
+    <form method="post" action="{% url 'api:api-events:event_request_review' event.pk %}" class="eventCanvasForm-eventCanvas{{ event.id }}" data-event-form-id="{{ event.id }}">
       {% csrf_token %}
       <div class="row mb-3">
         <div class="col-md-6 col-12">
@@ -39,6 +37,13 @@
         </div>
       </div>
 
+      <div class="row mb-3">
+        <div class="col-12">
+          {{ form.password.label_tag }}
+          {% render_field form.password value=event.password id='id_password_update' %}
+          <small class="text-muted">{{ form.password.help_text|safe|linebreaksbr }}</small>
+        </div>
+      </div>
       <div class="row mb-3">
         <div class="col-md-6 col-12">
           {{ form.phone.label_tag }}

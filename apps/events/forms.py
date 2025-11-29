@@ -34,6 +34,7 @@ class EventLaunchRequestForm(forms.ModelForm):
         fields = [
             "full_name",
             "email",
+            "password",
             "phone",
             "subdomain",
             "event_type",
@@ -44,6 +45,7 @@ class EventLaunchRequestForm(forms.ModelForm):
             "full_name": "Tell us who to contact.",
             "email": "We'll send onboarding instructions here.",
             "phone": "For direct communication & support.",
+            "password": "This is the password you will use to login into your subdomain.",
             "subdomain": "This will be your event portal URL.",
             "event_type": "Helps us prepare the right modules.",
             "event_details": "Share anything that helps us understand your needs.",
@@ -68,6 +70,13 @@ class EventLaunchRequestForm(forms.ModelForm):
                 attrs={
                     "class": "form-control",
                     "placeholder": "+254 712 345 678",
+                    "required": True,
+                }
+            ),
+            "password": forms.PasswordInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Enter a secure password",
                     "required": True,
                 }
             ),
@@ -113,6 +122,17 @@ class EventLaunchRequestForm(forms.ModelForm):
 
         return subdomain
 
+    def clean_email(self):
+        email = self.cleaned_data.get("email").lower().strip()
+        if EventLaunchRequest.objects.filter(email=email).exists():
+            msg = "This email is already registered."
+            raise forms.ValidationError(msg)
+        blocked_domains = ["spam.com", "test.com", "localhost", "ticketless.com"]
+        domain = email.split("@")[-1]
+        if domain in blocked_domains:
+            msg = f"Emails from {domain} are not allowed."
+            raise forms.ValidationError(msg)
+        return email
 
 class EventLaunchRequestUpdateForm(forms.ModelForm):
     class Meta:
@@ -121,6 +141,7 @@ class EventLaunchRequestUpdateForm(forms.ModelForm):
             "full_name",
             "email",
             "phone",
+            "password",
             "subdomain",
             "event_type",
             "plan",
@@ -137,6 +158,9 @@ class EventLaunchRequestUpdateForm(forms.ModelForm):
                 attrs={"readonly": True, "class": "form-control"}
             ),
             "phone": forms.TextInput(attrs={"readonly": True, "class": "form-control"}),
+            "password": forms.PasswordInput(
+                attrs={"readonly": True, "class": "form-control"}
+            ),
             "subdomain": forms.TextInput(
                 attrs={"readonly": True, "class": "form-control"}
             ),
@@ -153,10 +177,13 @@ class EventLaunchRequestUpdateForm(forms.ModelForm):
             ),
         }
 
+        help_texts = {
+            "password": "This is the client password to access their subdomain.\nDo not change it without informing the client.",
+        }
+
     def __init__(self, *args, **kwargs):
         self.manager = kwargs.pop("manager")
         super().__init__(*args, **kwargs)
-        # Set initial value for managed_by if needed
         if self.manager and "managed_by" in self.fields:
             self.fields["managed_by"].initial = self.manager.pk
         for field_name in self.fields:

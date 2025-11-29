@@ -9,8 +9,12 @@ from django.views import View
 from django.views.generic import DetailView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
-
+from allauth.account.forms import (
+    LoginForm,
+)
 from ifidel.users.models import User
+from django.contrib.auth import login, authenticate
+from django_tenants.utils import schema_context, tenant_context
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -50,13 +54,18 @@ user_redirect_view = UserRedirectView.as_view()
 
 
 class AjaxLoginView(LoginView):
+    form_class = LoginForm
+
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request=request)
         if not form.is_valid():
             return JsonResponse({"errors": form.errors}, status=400)
-        return JsonResponse({"success": True})
 
-
+        email = form.cleaned_data.get("email")
+        password = form.cleaned_data.get("password")
+        user = User.objects.first()
+        form.login()
+        return JsonResponse({"success": True, "redirect_url": "/dashboard/"})
 
 
 ajax_login_view = AjaxLoginView.as_view()
