@@ -8,7 +8,7 @@ from sentry_sdk.integrations.logging import LoggingIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
 
 from .base import *  # noqa: F403
-from .base import APPS_DIR
+from .base import APPS_DIR, REDIS_URL
 from .base import DEBUG
 from .base import SPECTACULAR_SETTINGS
 from .base import env
@@ -102,6 +102,25 @@ SPECTACULAR_SETTINGS["SERVERS"] = [
         "description": "Production server",
     },
 ]
+
+
+
+# LOGGING
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#logging
+# See https://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+# if not DEBUG:
+try:
+    from . import logging as prod_logging
+
+    for attr in dir(prod_logging):
+        if attr.isupper():
+            globals()[attr] = getattr(prod_logging, attr)
+except ImportError as e:
+    msg = "Production security settings not found!"
+    raise ImportError(msg) from e
+
 # Your stuff...
 # ------------------------------------------------------------------------------
 
@@ -109,4 +128,16 @@ SPECTACULAR_SETTINGS["SERVERS"] = [
 DJOSER = {
     "TOKEN_MODEL": None,
     # other settings
+}
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # Mimicking memcache behavior.
+            # https://github.com/jazzband/django-redis#memcached-exceptions-behavior
+            "IGNORE_EXCEPTIONS": True,
+        },
+    },
 }
