@@ -1,0 +1,26 @@
+:root {
+  --primary-color: #09574a;
+  --secondary-color: #eac6a4;
+  --bg-dark: #1d2125;
+  --white-color: #e3e3e3;
+  --dark: #131314;
+  --dark-gray: #1e1f20;
+
+  // font families
+  --font-roboto: "Roboto", sans-serif;
+  --font-open-sans: "Open Sans", sans-serif;
+
+  /* Breakpoints */
+  --screen-sm: 640px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+  --screen-2xl: 1536px;
+
+  /* Container max-widths (mobile-first) */
+  --container-sm: 600px;
+  --container-md: 720px;
+  --container-lg: 960px;
+  --container-xl: 1200px;
+  --container-2xl: 1440px;
+}

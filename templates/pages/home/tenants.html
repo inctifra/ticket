@@ -1,0 +1,29 @@
+{% load webpack_static from webpack_loader %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="main-title text-center">
+        <h3>321+ events created by thousands of organisations around the globe</h3>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="organisations-area">
+        <div class="swiper organisations-slider">
+          <div class="swiper-wrapper">
+            {% for tenant in tenants %}
+              <div class="swiper-slide">
+                <div class="sponsor">
+                  <a href="//{{ tenant.primary_domain }}:8000">
+                    <img src="{% webpack_static 'images/apps/sponsor.png' %}"
+                         alt="{{ tenant.name }}" />
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

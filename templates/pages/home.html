@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% load webpack_static from webpack_loader %}
+
+{% block bodyclass %}d-flex flex-column h-100{% endblock %}
+{% block content %}
+  <div class="hero-banner">{% include 'pages/home/hero.html' %}</div>
+  <div class="explore-events p-80">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12">
+          <div class="main-title">
+            <h3>Explore Events</h3>
+          </div>
+        </div>
+        {% include 'pages/home/events.html' %}
+      </div>
+    </div>
+  </div>
+  <div class="host-engaging-event-block p-80">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10">
+          <div class="main-title">
+            <h3>Host Engaging Online & In-Person Events with Ticketless</h3>
+            <p>
+              Focus on your audience—we handle everything else. Ticketless manages your events end-to-end, from ticketing to analytics, so you can run successful events without the stress.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="engaging-block">
+            <div class="swiper engaging-slider">
+              <div class="swiper-wrapper">
+                <!-- Slide 1 -->
+                <div class="swiper-slide">
+                  <div class="main-card">
+                    <div class="host-item">
+                      <div class="host-img">
+                        <img src="{% webpack_static 'images/icons/venue-events.png' %}" alt="" />
+                      </div>
+                      <h4>Venue Events</h4>
+                      <p>
+                        Host seamless in-person events with smart check-ins, secure e-tickets, and real-time attendee insights—no manual work required.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="swiper-slide">
+                  <div class="main-card">
+                    <div class="host-item">
+                      <div class="host-img">
+                        <img src="{% webpack_static 'images/icons/webinar.png' %}" alt="" />
+                      </div>
+                      <h4>Online Webinars</h4>
+                      <p>
+                        Run virtual sessions without juggling multiple tools. Ticketless powers your streaming, registration, and engagement from one platform.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="swiper-slide">
+                  <div class="main-card">
+                    <div class="host-item">
+                      <div class="host-img">
+                        <img src="{% webpack_static 'images/icons/training-workshop.png' %}"
+                             alt="" />
+                      </div>
+                      <h4>Workshops & Trainings</h4>
+                      <p>
+                        Create professional learning experiences, sell tickets, and track attendance—while Ticketless automates the logistics.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- swiper-wrapper -->
+            </div>
+            <!-- swiper -->
+          </div>
+          <!-- engaging-block -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="feature-block p-80">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10">
+          <div class="main-title">
+            <h3>We Handle Everything — You Focus on Your Event</h3>
+            <p>
+              Ticketless is a fully managed ticketing service designed for organizers who want results without the technical workload. We create your tickets, set up your event, manage check-ins, handle promotions, and support your attendees while you focus on delivering an unforgettable experience.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-12">{% include 'pages/home/features.html' %}</div>
+      </div>
+    </div>
+  </div>
+  <div class="host-step-block p-80">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10">
+          <div class="main-title">
+            <h3>Seamless Event Ticketing in 4 Simple Steps</h3>
+            <p>
+              We handle ticket creation, distribution, payments, and logistics—so you focus on hosting an unforgettable event.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-12">{% include 'pages/home/steps.html' %}</div>
+      </div>
+    </div>
+  </div>
+  <section class="pricing-section py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="section-title">Pricing Plans</h2>
+        <p class="text-muted">
+          We handle ticketing, event setup, and attendee support. You decide the ticket revenue percentage to share — ensuring you profit while we manage everything for you.
+        </p>
+      </div>
+      {% include 'pages/home/pricing.html' %}
+      <div class="text-center mt-5">
+        <p class="text-muted">
+          * Custom pricing available upon request. Percentages are subject to agreement between the event owner and our management team.
+        </p>
+      </div>
+    </div>
+  </section>
+  <div class="our-organisations-block p-80">{% include 'pages/home/tenants.html' %}</div>
+  <div class="testimonial-block p-80">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10">
+          <div class="main-title">
+            <h3>Transforming Thousands of Event Hosts Just Like You</h3>
+            <p>
+              Be part of a winning team. We are continuously thriving to bring the best to our customers. Be that a new product feature, help in setting up your events or even supporting your customers so that they can easily buy tickets and participate your in events. Here is what some of the clients have to say.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-12">{% include 'pages/home/testimonials.html' %}</div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

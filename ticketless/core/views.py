@@ -1,0 +1,24 @@
+from django.views.generic import TemplateView
+
+from ticketless.customers.models import Client
+from ticketless.plan.models import Plan
+
+
+class HomeView(TemplateView):
+    template_name = "pages/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["tenants"] = Client.objects.exclude(
+            schema_name=self.request.tenant.schema_name
+        )
+        context["plans"] = Plan.objects.all()
+        return context
+
+
+class AboutView(TemplateView):
+    template_name = "pages/about.html"
+
+
+class PrivacyView(TemplateView):
+    template_name = "pages/privacy.html"

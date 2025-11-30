@@ -1,0 +1,95 @@
+{% load webpack_static from webpack_loader %}
+
+<header class="header">
+  <div class="header-inner">
+    <nav class="navbar navbar-expand-lg bg-barren barren-head navbar fixed-top justify-content-sm-start pt-0 pb-0 ps-lg-0 pe-2">
+      <div class="container-fluid ps-0">
+        <button type="button" id="toggleMenu" class="toggle_menu">
+          <i class="ti ti-menu-2"></i>
+        </button>
+        <button id="collapse_menu" class="collapse_menu me-4">
+          <i class="ti ti-menu-2 collapse_menu--icon"></i>
+          <span class="collapse_menu--label"></span>
+        </button>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar">
+          <span class="close-btn" style="width: 40px"><i class="ti ti-menu-2" style="width: 100%"></i></span>
+        </button>
+        <a class="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 me-auto"
+           href="{% url 'home' %}">
+          <div class="res-main-logo">
+            <img src="{% webpack_static 'images/logos/ticketless-icon.png' %}" alt="" />
+          </div>
+          <div class="main-logo" id="logo">
+            <img src="{% webpack_static 'images/logos/ticketless.png' %}" alt="" />
+            <img class="logo-inverse"
+                 src="{% webpack_static 'images/logos/dark-logo.svg' %}"
+                 alt="" />
+          </div>
+        </a>
+        <div class="offcanvas offcanvas-start"
+             tabindex="-1"
+             id="offcanvasNavbar"
+             aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header d-flex d-md-none align-items-center justify-content-between">
+            <div class="offcanvas-logo" id="offcanvasNavbarLabel">
+              <img src="{% webpack_static 'images/logos/ticketless-icon.png' %}" alt="" />
+            </div>
+            <button type="button"
+                    class="close-btn"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close">
+              <i class="ti ti-x"></i>
+            </button>
+          </div>
+          <div class="offcanvas-body">
+            <div class="offcanvas-top-area">
+              <div class="create-bg">
+                <a href="" class="offcanvas-create-btn">
+                  <i class="ti ti-calendar-clock"></i>
+                  <span>Create Event</span>
+                </a>
+              </div>
+            </div>
+            <ul class="navbar-nav justify-content-end grow pe_5">
+              <li class="nav-item">
+                <a class="nav-link" role="button"><i class="ti ti-arrow-autofit-right me-2"></i>My Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" role="button"><i class="ti ti-compass me-2"></i>Explore Events</a>
+              </li>
+            </ul>
+          </div>
+          <div class="offcanvas-footer">
+            <div class="offcanvas-social">
+              <h5>Follow Us</h5>
+              <ul class="social-links">
+                <li>
+                  <a href="#" class="social-link"><i class="fas fa-facebook"></i></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="right-header order-2">
+          <ul class="p-0 m-0">
+            <li class="me-1">
+              <div class="night_mode_switch__btn">
+                <div id="night-mode" class="ti ti-sun"></div>
+              </div>
+            </li>
+            <li class="right-header__login__modal--btn">
+              <div class="profile__login">
+                <div class="ti ti-user"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="overlay"></div>
+  </div>
+</header>

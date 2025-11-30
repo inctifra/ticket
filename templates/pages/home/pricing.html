@@ -1,0 +1,22 @@
+<div class="row g-4 justify-content-center">
+  {% for plan in plans %}
+    <div class="col-lg-4 col-md-6">
+      <div class="card shadow-sm h-100 text-center {{ plan.card_color }}">
+        <div class="card-header {{ plan.card_color }} border-0">
+          <h4 class="fw-bold">{{ plan.get_name_display }}</h4>
+        </div>
+        <div class="card-body">
+          <h3 class="card-price">
+            {{ plan.price_percentage }}% <small>/ ticket</small>
+          </h3>
+          <p class="text-muted mb-3">{{ plan.description }}</p>
+          <ul class="list-unstyled mb-4 text-start">
+            {% for feature in plan.features.all %}<li>{{ feature.name }}</li>{% endfor %}
+          </ul>
+          <a role="button"
+             class="btn btn-hover {{ plan.button_class }} w-100 launch-event-btn">Get Started</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>

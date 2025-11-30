@@ -1,0 +1,74 @@
+{
+  "name": "ticketless",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "dev": "webpack --config webpack/dev.config.js",
+    "build": "webpack --config webpack/prod.config.js"
+  },
+  "packageManager": "pnpm@10.22.0",
+  "devDependencies": {
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@popperjs/core": "^2.10.2",
+    "@types/jquery": "^3.5.33",
+    "@types/node": "^24.5.2",
+    "autoprefixer": "^10.4.0",
+    "babel-loader": "^10.0.0",
+    "baseline-browser-mapping": "^2.8.30",
+    "bootstrap": "^5.2.3",
+    "copy-webpack-plugin": "^13.0.1",
+    "css-loader": "^7.1.2",
+    "dotenv-webpack": "^8.1.1",
+    "mini-css-extract-plugin": "^2.4.5",
+    "node-sass-tilde-importer": "^1.0.2",
+    "pixrem": "^5.0.0",
+    "postcss": "^8.3.11",
+    "postcss-loader": "^8.0.0",
+    "postcss-preset-env": "^10.0.3",
+    "sass": "1.77.6",
+    "sass-loader": "^16.0.1",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.2",
+    "webpack": "^5.82.0",
+    "webpack-bundle-tracker": "^3.0.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.0.2",
+    "webpack-merge": "^6.0.1"
+  },
+  "engines": {
+    "node": "22.14"
+  },
+  "browserslist": [
+    "last 2 versions"
+  ],
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.1.0",
+    "@iconscout/unicons": "^4.2.0",
+    "@tabler/icons-webfont": "^3.35.0",
+    "axios": "^1.12.2",
+    "bootstrap-select": "^1.13.18",
+    "chart.js": "^4.5.1",
+    "css-minimizer-webpack-plugin": "^7.0.2",
+    "datatables.net-dt": "^2.3.5",
+    "datatables.net-responsive-dt": "^3.0.7",
+    "dotenv": "^17.2.2",
+    "fastbootstrap": "^2.2.0",
+    "jquery": "^3.7.1",
+    "mixitup": "^3.3.2",
+    "owl.carousel": "^2.3.4",
+    "swiper": "^12.0.3",
+    "terser-webpack-plugin": "^5.3.14",
+    "webpackbar": "^7.0.0"
+  }
+}
