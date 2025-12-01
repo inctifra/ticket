@@ -7,3 +7,4 @@ class TenantHomeView(TemplateView):
 
 class PrivacyView(TemplateView):
     template_name = "tenants/pages/privacy.html"
+
