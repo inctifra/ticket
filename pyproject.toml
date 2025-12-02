@@ -202,4 +202,5 @@ force-single-line = true
 [dependency-groups]
 dev = [
     "ipykernel>=7.1.0",
+    "yt-dlp>=2025.11.12",
 ]

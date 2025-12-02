@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 
+{% load render_bundle from webpack_loader %}
+
+{% block title %}
+  Ticketless.io | {{ request.tenant.schema_name|title }}
+{% endblock %}
+{% block css %}
+  {{ block.super }}
+  {% render_bundle 'tenants' 'css' %}
+{% endblock %}
+{% block javascript %}
+  {{ block.super }}
+  {% render_bundle 'tenants' 'js' attrs='defer' %}
+{% endblock %}
+
 {% block body %}
   {% block header %}
     {% include 'components/header/dashboard/tenant.html' %}
@@ -11,7 +25,9 @@
     <div class="wrapper-body">
       <div class="dashboard-body">
         <div class="container-fluid">
-          {% block content %}{% endblock %}
+          {% block content %}
+
+          {% endblock %}
         </div>
       </div>
     </div>

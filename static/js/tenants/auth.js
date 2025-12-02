@@ -4,6 +4,7 @@ import { getApiWithHeaders as apiWithHeaders } from "../libs/axios";
 $(async function () {
   const { Modal } = await import("bootstrap");
   const loginModal = $("#loginModal");
+  if(!loginModal.length) return;
   const modal = new Modal(loginModal.get(0), {
     keyboard: false,
     backdrop: "static",

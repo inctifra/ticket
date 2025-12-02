@@ -1,12 +1,13 @@
 import csv
 import datetime
-from guardian.admin import GuardedModelAdmin
+
 from django.contrib import admin
 from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.html import format_html
+from guardian.admin import GuardedModelAdmin
 
 from .models import Event
 from .models import InventoryBucket
@@ -16,10 +17,6 @@ from .models import ScanLog
 from .models import Ticket
 from .models import TicketReservation
 from .models import TicketType
-
-# -------------------------------------------------------------------
-# INLINE DEFINITIONS
-# -------------------------------------------------------------------
 
 
 class OrderItemInline(admin.TabularInline):
@@ -47,11 +44,6 @@ class TicketInline(admin.TabularInline):
         "event_title",
         "event_start",
     )
-
-
-# -------------------------------------------------------------------
-# TICKET TYPE ADMIN
-# -------------------------------------------------------------------
 
 
 @admin.register(TicketType)
@@ -99,9 +91,6 @@ class TicketTypeAdmin(admin.ModelAdmin):
     remaining_display.short_description = "Remaining"
 
 
-# -------------------------------------------------------------------
-# INVENTORY ADMIN
-# -------------------------------------------------------------------
 
 
 @admin.register(InventoryBucket)
@@ -110,11 +99,6 @@ class InventoryBucketAdmin(admin.ModelAdmin):
     list_filter = ("updated_at",)
     search_fields = ("ticket_type__name",)
     readonly_fields = ("updated_at",)
-
-
-# -------------------------------------------------------------------
-# ORDER ADMIN
-# -------------------------------------------------------------------
 
 
 @admin.register(Order)
@@ -150,13 +134,9 @@ class OrderAdmin(admin.ModelAdmin):
     mark_as_paid.short_description = "Mark selected orders as Paid"
 
     def has_delete_permission(self, request, obj=None):
-        # Protect orders from accidental deletion
         return False
 
 
-# -------------------------------------------------------------------
-# TICKET ADMIN
-# -------------------------------------------------------------------
 
 
 @admin.register(Ticket)
@@ -199,9 +179,6 @@ class TicketAdmin(admin.ModelAdmin):
         return False
 
 
-# -------------------------------------------------------------------
-# RESERVATION ADMIN
-# -------------------------------------------------------------------
 
 
 @admin.register(TicketReservation)
@@ -227,10 +204,6 @@ class TicketReservationAdmin(admin.ModelAdmin):
     expired_display.short_description = "Status"
 
 
-# -------------------------------------------------------------------
-# SCAN LOG ADMIN
-# -------------------------------------------------------------------
-
 
 @admin.register(ScanLog)
 class ScanLogAdmin(admin.ModelAdmin):
@@ -248,9 +221,7 @@ class ScanLogAdmin(admin.ModelAdmin):
     success_icon.short_description = "Valid"
 
 
-# ---------------------
-# Custom Filters
-# ---------------------
+
 class UpcomingFilter(admin.SimpleListFilter):
     title = "When"
     parameter_name = "when"
@@ -276,10 +247,6 @@ class UpcomingFilter(admin.SimpleListFilter):
             return queryset.filter(start_at__gte=start_of_day, start_at__lt=end_of_day)
         return queryset
 
-
-# ---------------------
-# Admin Actions
-# ---------------------
 def make_published(modeladmin, request, queryset):
     updated = queryset.update(is_published=True)
     modeladmin.message_user(
@@ -338,27 +305,17 @@ def export_as_csv(modeladmin, request, queryset):
 export_as_csv.short_description = "Export selected events as CSV"
 
 
-# ---------------------
-# Utility / Placeholder for sync logic
-# ---------------------
 def sync_to_public(event):
     """
     Placeholder: called when an event becomes published. Implement your sync
     to public marketplace here (e.g., enqueue a Celery job, call an API,
     or create/update a row in the public schema).
     """
-    # Example: enqueue a task, or call your sync function
 
-
-# ---------------------
-# EventAdmin
-# ---------------------
 @admin.register(Event)
 class EventAdmin(GuardedModelAdmin):
-    # Columns visible in the changelist
     list_display = (
         "id",
-        "title",
         "start_at",
         "end_at",
         "venue_name",
@@ -367,23 +324,21 @@ class EventAdmin(GuardedModelAdmin):
         "created_at",
         "updated_at",
         "preview_link",
+        "cover"
     )
 
-    list_display_links = ("title",)
-    list_editable = ("is_published",)  # quick toggle from list view
+    list_editable = ("is_published",)
     list_filter = ("is_published", "venue_name", UpcomingFilter)
-    search_fields = ("title", "short_description", "venue_name", "venue_address")
+    search_fields = ("short_description", "venue_name", "venue_address")
     date_hierarchy = "start_at"
     ordering = ("-start_at",)
     list_per_page = 25
 
-    # Readonly fields in the change form
     readonly_fields = (
         "created_at",
         "updated_at",
     )
 
-    # Fields layout in the change form
     fieldsets = (
         (
             "Basic Info",
@@ -405,6 +360,12 @@ class EventAdmin(GuardedModelAdmin):
             },
         ),
         (
+            "Media",
+            {
+                "fields": ("cover",),
+            },
+        ),
+        (
             "Status & Meta",
             {
                 "fields": ("is_published", "created_at", "updated_at"),
@@ -414,7 +375,6 @@ class EventAdmin(GuardedModelAdmin):
 
     actions = [make_published, make_unpublished, export_as_csv]
 
-    # Helpful small helpers
     def display_capacity(self, obj):
         return obj.capacity or "—"
 
@@ -423,16 +383,10 @@ class EventAdmin(GuardedModelAdmin):
 
     def preview_link(self, obj):
         """Show a link to preview the event on the tenant site (if applicable)."""
-        # If you can generate a preview path for tenant, render it here.
-        # Replace '#' with actual URL generation logic.
         url = "#"
         return format_html('<a href="{}" target="_blank">Preview</a>', url)
 
     preview_link.short_description = "Preview"
-
-    # ---------------------
-    # Save hooks - keep fast, minimal DB work here
-    # ---------------------
     @transaction.atomic
     def save_model(self, request, obj, form, change):
         """
@@ -440,7 +394,6 @@ class EventAdmin(GuardedModelAdmin):
         trigger sync.
         Keep heavy work out of the request: enqueue background jobs instead.
         """
-        # determine if publish status changed
         was_published = False
         if obj.pk:
             try:
@@ -450,34 +403,15 @@ class EventAdmin(GuardedModelAdmin):
                 was_published = False
 
         super().save_model(request, obj, form, change)
-
-        # If event transitioned from unpublished -> published, trigger sync
         if not was_published and obj.is_published:
-            # enqueue or call sync logic
             sync_to_public(obj)
 
-    # ---------------------
-    # Optimize queryset (prefetch if you add related models later)
-    # ---------------------
     def get_queryset(self, request):
         return super().get_queryset(request)
-
-    # ---------------------
-    # Optional: Add per-object admin permission checks
-    # ---------------------
     def has_change_permission(self, request, obj=None):
-        # Example: only superusers can change events; adapt to your RBAC
         if obj is not None and not request.user.is_superuser:
-            # optionally add more logic: event owners, tenant staff, etc.
             return True
         return super().has_change_permission(request, obj)
-
-    # ---------------------
-    # CSV export in changelist action return
-    # ---------------------
     def changelist_view(self, request, extra_context=None):
-        # Keep default behaviour, but you could inject extra context like counts
         return super().changelist_view(request, extra_context=extra_context)
 
-
-# Optional: register ModelAdmin for other related models (tickets, orders) similarly.

@@ -5,7 +5,8 @@ build/
 dist/
 wheels/
 *.egg-info
-
+downloads/
+uniwalk/
 http/
 ### Python template
 # Byte-compiled / optimized / DLL files
