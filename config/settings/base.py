@@ -81,6 +81,7 @@ THIRD_PARTY_APPS = [
     "django_extensions",
     "widget_tweaks",
     "corsheaders",
+    "guardian",
 ]
 
 
@@ -107,7 +108,11 @@ PUBLIC_SCHEMA_NAME = "public"
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
+    "guardian.backends.ObjectPermissionBackend",
 ]
+
+ANONYMOUS_USER_ID = 1
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
@@ -151,6 +156,10 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "ticketless.users.context_processors.allauth_settings",
                 "ticketless.events.context_processors.load_core_context",
+            ],
+            "builtins": [
+                "widget_tweaks.templatetags.widget_tweaks",
+                "guardian.templatetags.guardian_tags",
             ],
         },
     },

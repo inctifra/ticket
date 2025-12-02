@@ -1,6 +1,6 @@
 import csv
 import datetime
-
+from guardian.admin import GuardedModelAdmin
 from django.contrib import admin
 from django.contrib import messages
 from django.db import transaction
@@ -354,7 +354,7 @@ def sync_to_public(event):
 # EventAdmin
 # ---------------------
 @admin.register(Event)
-class EventAdmin(admin.ModelAdmin):
+class EventAdmin(GuardedModelAdmin):
     # Columns visible in the changelist
     list_display = (
         "id",

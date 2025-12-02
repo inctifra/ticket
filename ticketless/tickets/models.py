@@ -2,6 +2,9 @@ import uuid
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.text import slugify
+
+from ticketless.tickets.utils import upload_event_image_path
 
 User = get_user_model()
 
@@ -13,6 +16,7 @@ class Event(models.Model):
     """
 
     title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
     short_description = models.TextField(blank=True)
     start_at = models.DateTimeField()
     end_at = models.DateTimeField(null=True, blank=True)
@@ -22,6 +26,8 @@ class Event(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     capacity = models.PositiveIntegerField(null=True, blank=True)
+    cover = models.ImageField(upload_to="event_covers/", null=True, blank=True)
+    meta = models.JSONField(default=dict, blank=True)
 
     class Meta:
         indexes = [
@@ -30,8 +36,39 @@ class Event(models.Model):
         ]
         ordering = ["-start_at"]
 
+        permissions = [
+            ("manage_event", "Can manage event and ticket types"),
+            ("view_event_reports", "Can view event sales and attendance reports"),
+            ("scan_tickets", "Can scan tickets at event entry"),
+        ]
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(end_at__gte=models.F("start_at")),
+                name="end_after_start",
+            ),
+            models.UniqueConstraint(
+                fields=["title", "start_at"],
+                name="unique_event_title_start",
+            ),
+        ]
+
     def __str__(self):
         return f"{self.title} ({self.start_at.date()})"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = str(slugify(self.title) + str(uuid.uuid4()))
+        super().save(*args, **kwargs)
+
+
+class EventImage(models.Model):
+    event = models.ForeignKey(Event, related_name="images", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=upload_event_image_path)
+    alt_text = models.CharField(max_length=255, blank=True)
+    ordering = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Image for {self.event.title}"
 
 
 class TicketType(models.Model):
