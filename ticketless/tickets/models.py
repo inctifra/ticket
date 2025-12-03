@@ -1,3 +1,4 @@
+from django.urls import reverse
 import uuid
 
 from django.contrib.auth import get_user_model
@@ -43,7 +44,7 @@ class Event(models.Model):
         ]
         constraints = [
             models.CheckConstraint(
-                check=models.Q(end_at__gte=models.F("start_at")),
+                condition=models.Q(end_at__gte=models.F("start_at")),
                 name="end_after_start",
             ),
             models.UniqueConstraint(
@@ -55,11 +56,14 @@ class Event(models.Model):
     def __str__(self):
         return f"{self.title} ({self.start_at.date()})"
 
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = str(slugify(self.title) + str(uuid.uuid4()))
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse("tenants:event_detail", kwargs={"slug": self.slug})
 
 class EventImage(models.Model):
     event = models.ForeignKey(Event, related_name="images", on_delete=models.CASCADE)

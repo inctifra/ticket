@@ -12,7 +12,6 @@ class HomeView(LoginRequiredMixin, IsOwnerOrManager, TemplateView):
         context =  super().get_context_data(**kwargs)
         context["event_create_form"] = self.event_create_form()
         context["events"] = Event.objects.all().order_by("-created_at")
-        print(context["events"])
         return context
 
 

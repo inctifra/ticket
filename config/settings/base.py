@@ -56,6 +56,7 @@ SHARED_APPS = [
     "django.contrib.sessions",
     "django_celery_beat",
     "django.contrib.messages",
+    "django.contrib.humanize",
     "django.contrib.staticfiles",
     # MUST be here since it contains AUTH_USER_MODEL
     "ticketless.users",
@@ -363,7 +364,7 @@ STATICFILES_FINDERS = [
 # MEDIA
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = str(BASE_DIR / "media")
+MEDIA_ROOT = str(APPS_DIR / "media")
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"
 

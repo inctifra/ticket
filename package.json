@@ -57,6 +57,7 @@
     "@iconscout/unicons": "^4.2.0",
     "@tabler/icons-webfont": "^3.35.0",
     "axios": "^1.12.2",
+    "bootstrap-icons": "^1.13.1",
     "bootstrap-select": "^1.13.18",
     "chart.js": "^4.5.1",
     "css-minimizer-webpack-plugin": "^7.0.2",
