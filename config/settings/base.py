@@ -72,6 +72,7 @@ SHARED_APPS = [
     "djoser",
     "rest_framework_simplejwt",
     "drf_spectacular",
+    "qr_code",
 ]
 
 THIRD_PARTY_APPS = [

@@ -5,6 +5,17 @@ export function setupAjaxForm(selector, { onSuccess, onError } = {}) {
     e.preventDefault();
 
     const form = $(this);
+    const submitBtn = form.find('[type="submit"]');
+
+    const originalBtnHTML = submitBtn.html();
+
+    submitBtn.prop("disabled", true).html(`
+      <div class="d-flex align-items-center justify-content-center">
+        <span class="spinner-border spinner-border-md me-2" role="status" aria-hidden="true"></span>
+        <span>Processing...</span>
+      </div>
+    `);
+
     const formData = new FormData(this);
     clearFieldErrors(form);
 
@@ -16,20 +27,22 @@ export function setupAjaxForm(selector, { onSuccess, onError } = {}) {
       const { data } = await apiWithHeaders({
         "Content-Type": "multipart/form-data",
       }).post(form.attr("action"), formData);
-
       if (data.success === false) {
         showFieldErrors(form, data.errors);
         if (onError) onError(data);
         return;
       }
-      if (onSuccess) onSuccess(data);
 
+      if (onSuccess) onSuccess(data);
     } catch (err) {
       console.error("AJAX error:", err);
+
       if (err.response?.data?.errors) {
         showFieldErrors(form, err.response.data.errors);
         if (onError) onError(err.response.data);
       }
+    } finally {
+      submitBtn.prop("disabled", false).html(originalBtnHTML);
     }
   });
 }
@@ -49,7 +62,9 @@ function showFieldErrors(form, errors) {
       field.addClass("is-invalid");
 
       const errorDiv = $(
-        `<div class="error-message text-danger" style="font-size: 0.85rem;">${messages.join("<br>")}</div>`
+        `<div class="error-message text-danger" style="font-size: 0.85rem;">${messages.join(
+          "<br>"
+        )}</div>`
       );
 
       field.after(errorDiv);

@@ -1,8 +1,12 @@
-from django.urls import reverse
 import uuid
+from io import BytesIO
 
+# import qrcode
+from qr_code import qrcode
 from django.contrib.auth import get_user_model
+from django.core.files.base import ContentFile
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 from ticketless.tickets.utils import upload_event_image_path
@@ -81,7 +85,7 @@ class TicketType(models.Model):
     Lives in tenant schema. Links to public Event by id (no FK).
     """
 
-    id = models.BigAutoField(primary_key=True)
+    id = models.BigAutoField(primary_key=True, editable=False, unique=True, db_index=True)
     event = models.ForeignKey(
         Event,
         on_delete=models.SET_NULL,
@@ -91,17 +95,12 @@ class TicketType(models.Model):
     )
     name = models.CharField(max_length=120)  # e.g., "Group (5)"
     description = models.TextField(blank=True)
-    capacity = models.PositiveIntegerField(
-        null=True,
-        blank=True,
-    )  # max number of *tickets* of this type
     per_ticket_capacity = models.PositiveIntegerField(
         default=1,
         help_text="Ticket can carry multiple users",
     )  # if seats per ticket (group of 5 -> 5)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     is_active = models.BooleanField(default=True)
-    position = models.PositiveIntegerField(default=0)  # ordering in UI
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -109,6 +108,12 @@ class TicketType(models.Model):
         indexes = [
             models.Index(fields=["event_id"]),
             models.Index(fields=["id"]),
+        ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["event", "name", "id"],
+                name="unique_event_ticket_type_name",
+            ),
         ]
 
     def __str__(self):
@@ -141,13 +146,14 @@ class Order(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # optional guest purchases
     user = models.ForeignKey(
         User,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         help_text="This field is not required since we won't be registering users",
-    )  # optional guest purchases
+    )
     email = models.EmailField(blank=True)
     phone = models.CharField(blank=True)
     status = models.CharField(
@@ -157,6 +163,7 @@ class Order(models.Model):
             ("paid", "Paid"),
             ("cancelled", "Cancelled"),
             ("refunded", "Refunded"),
+            ("failed", "Failed")
         ),
         default="pending",
     )
@@ -164,11 +171,15 @@ class Order(models.Model):
     currency = models.CharField(max_length=10, default="USD")
     created_at = models.DateTimeField(auto_now_add=True)
     paid_at = models.DateTimeField(null=True, blank=True)
-    # store gateway metadata
     meta = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return f"Order for {self.email} {self.phone}"
+
+    def delete_url(self):
+        return reverse("tenants:actions:delete_order_view", kwargs={
+            "order_id": str(self.id)
+        })
 
 
 class OrderItem(models.Model):
@@ -184,12 +195,8 @@ class OrderItem(models.Model):
         return str(self.ticket_type.name)
 
 
-class Ticket(models.Model):
-    """
-    Actual ticket issued to customer. Contains a barcode/QR token
-    and scanning status. Use non-sequential secure token.
-    """
 
+class Ticket(models.Model):
     STATUS_CHOICES = [
         ("issued", "Issued"),
         ("redeemed", "Redeemed"),
@@ -198,21 +205,22 @@ class Ticket(models.Model):
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    order = models.ForeignKey(Order, related_name="tickets", on_delete=models.CASCADE)
-    ticket_type = models.ForeignKey(TicketType, on_delete=models.PROTECT)
+
+    order = models.ForeignKey("Order", related_name="tickets", on_delete=models.CASCADE)
+    ticket_type = models.ForeignKey("TicketType", on_delete=models.PROTECT)
+
     holder_name = models.CharField(max_length=255, blank=True)
     holder_email = models.EmailField(blank=True)
-    token = models.CharField(
-        max_length=128, unique=True, blank=True, null=True
-    )  # e.g., signed token or base32
-    barcode_data = models.CharField(
-        max_length=255,
-        blank=True,
-    )  # friendly code for scanning (human-readable)
+
+    token = models.CharField(max_length=128, unique=True, blank=True, null=True)
+    barcode_data = models.CharField(max_length=255, blank=True)
+
+    qr_code = models.ImageField(upload_to="tickets/qrcodes/", blank=True, null=True)
+
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="issued")
     issued_at = models.DateTimeField(auto_now_add=True)
     redeemed_at = models.DateTimeField(null=True, blank=True)
-    # Denormalized snapshot of event for fast lookup at scan time:
+
     event_title = models.CharField(max_length=255, blank=True)
     event_start = models.DateTimeField(null=True, blank=True)
 
@@ -223,8 +231,35 @@ class Ticket(models.Model):
         ]
 
     def __str__(self):
-        return str(self.holder_name)
+        return self.holder_name or str(self.id)
 
+    # -----------------------
+    # QR CODE AUTO GENERATION
+    # -----------------------
+    def save(self, *args, **kwargs):
+        # Generate token if missing
+        if not self.token:
+            self.token = uuid.uuid4().hex
+
+        # Generate QR code for the token
+        if not self.qr_code:
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_H,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(self.token)
+            qr.make(fit=True)
+
+            img = qr.make_image(fill_color="black", back_color="white")
+
+            buffer = BytesIO()
+            img.save(buffer, format="PNG")
+            file_name = f"{self.token}.png"
+            self.qr_code.save(file_name, ContentFile(buffer.getvalue()), save=False)
+
+        super().save(*args, **kwargs)
 
 class TicketReservation(models.Model):
     """

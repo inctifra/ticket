@@ -1,6 +1,8 @@
 from django import forms
 
-from .models import Event
+from ticketless.tickets.widgets import TicketTypeSelect
+
+from .models import Event, TicketType
 
 
 class EventCreationForm(forms.ModelForm):
@@ -48,3 +50,64 @@ class EventCreationForm(forms.ModelForm):
         if end_at and start_at and end_at < start_at:
             self.add_error("end_at", "End date must be after the start date.")
         return cleaned_data
+
+
+class ProcessTicketCheckoutForm(forms.Form):
+    ticket_type = forms.ModelChoiceField(
+        queryset=TicketType.objects.none(),
+        empty_label=None,
+        widget=TicketTypeSelect(
+            attrs={
+                "class": "selectpicker w-100",
+                "data-live-search": "true",
+                "required": True,
+            }
+        ),
+    )
+    first_name = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={"class": "form-control h_50", "placeholder": "First Name"}
+        ),
+    )
+    last_name = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(
+            attrs={"class": "form-control h_50", "placeholder": "Last Name"}
+        ),
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={"class": "form-control h_50", "placeholder": "Email Address"}
+        )
+    )
+    phone_number = forms.CharField(
+        max_length=20,
+        widget=forms.TextInput(
+            attrs={"class": "form-control h_50", "placeholder": "Phone Number"}
+        ),
+    )
+    quantity = forms.IntegerField(
+        min_value=1,
+        initial=1,
+        widget=forms.NumberInput(
+            attrs={
+                "class": "form-control h_50",
+                "placeholder": "Quantity",
+                "min": "1",
+                "step": "1",
+                "id": "ticket-qty",
+            }
+        ),
+    )
+    total_price = forms.DecimalField(widget=forms.HiddenInput())
+    currency = forms.CharField(initial="KES", widget=forms.HiddenInput())
+
+    def __init__(self, *args, **kwargs):
+        event = kwargs.pop("event", None)
+        super().__init__(*args, **kwargs)
+        if event:
+            qs = event.event_ticket_type.filter(is_active=True)
+            self.fields["ticket_type"].queryset = qs
+            price_map = {str(t.id): t.price for t in qs}
+            self.fields["ticket_type"].widget.price_map = price_map

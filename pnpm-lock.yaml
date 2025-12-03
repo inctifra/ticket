@@ -23,6 +23,9 @@ importers:
       '@iconscout/unicons':
         specifier: ^4.2.0
         version: 4.2.0
+      '@paystack/inline-js':
+        specifier: ^2.22.7
+        version: 2.22.7
       '@tabler/icons-webfont':
         specifier: ^3.35.0
         version: 3.35.0
@@ -38,6 +41,9 @@ importers:
       chart.js:
         specifier: ^4.5.1
         version: 4.5.1
+      choices.js:
+        specifier: ^11.1.0
+        version: 11.1.0
       css-minimizer-webpack-plugin:
         specifier: ^7.0.2
         version: 7.0.2(webpack@5.103.0)
@@ -1202,6 +1208,10 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     deprecated: This functionality has been moved to @npmcli/fs
 
+  '@paystack/inline-js@2.22.7':
+    resolution: {integrity: sha512-95/BkaJ61XTiL74k+x+3fp4NGDKHp4JZA9PXL+/DFd8gIPjI0TEA1ocHSjh1FRMIdpcfgpHLoTWMRvfBsQXstQ==}
+    engines: {node: '>= 22.0.0'}
+
   '@popperjs/core@2.11.8':
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
 
@@ -1698,6 +1708,9 @@ packages:
   cheerio@1.1.2:
     resolution: {integrity: sha512-IkxPpb5rS/d1IiLbHMgfPuS0FgiWTtFIm/Nj+2woXDLTZ7fOT2eqzgYbdMlLweqlHbsZjxEChoVK+7iph7jyQg==}
     engines: {node: '>=20.18.1'}
+
+  choices.js@11.1.0:
+    resolution: {integrity: sha512-mIt0uLhedHg2ea/K2PACrVpt391vRGHuOoctPAiHcyemezwzNMxj7jOzNEk8e7EbjLh0S0sspDkSCADOKz9kcw==}
 
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
@@ -2391,6 +2404,10 @@ packages:
 
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
+
+  fuse.js@7.1.0:
+    resolution: {integrity: sha512-trLf4SzuuUxfusZADLINj+dE8clK1frKdmqiJNb1Es75fmI5oY6X2mxLVUciLLjxqw/xr72Dhy+lER6dGd02FQ==}
+    engines: {node: '>=10'}
 
   gauge@4.0.4:
     resolution: {integrity: sha512-f9m+BEN5jkg6a0fZjleidjN51VE1X+mPFQ2DJ0uv1V39oCLCbsGe6yjbBnp7eK7z/+GAon99a3nHuqbuuthyPg==}
@@ -5580,6 +5597,8 @@ snapshots:
       mkdirp: 1.0.4
       rimraf: 3.0.2
 
+  '@paystack/inline-js@2.22.7': {}
+
   '@popperjs/core@2.11.8': {}
 
   '@sinclair/typebox@0.27.8': {}
@@ -6192,6 +6211,10 @@ snapshots:
       parse5-parser-stream: 7.1.2
       undici: 7.16.0
       whatwg-mimetype: 4.0.0
+
+  choices.js@11.1.0:
+    dependencies:
+      fuse.js: 7.1.0
 
   chokidar@3.6.0:
     dependencies:
@@ -6954,6 +6977,8 @@ snapshots:
       is-callable: 1.2.7
 
   functions-have-names@1.2.3: {}
+
+  fuse.js@7.1.0: {}
 
   gauge@4.0.4:
     dependencies:

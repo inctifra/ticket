@@ -64,7 +64,7 @@
           <div class="main-card event-right-dt">
             <div class="bp-title d-flex align-items-center justify-content-between">
               <h4>Event Details</h4>
-                <span class="event-price me-2">Available tickets (33)</span>
+              <span class="event-price me-2">Available tickets (33)</span>
             </div>
             <div class="time-left">
               <div class="countdown">
@@ -147,7 +147,7 @@
               </div>
             </div>
             <div class="booking-btn">
-              <a href="" class="main-btn btn-hover w-100">Purchase Ticket</a>
+              <a href="{% url 'tenants:event_ticket_checkout' event.slug %}" class="main-btn btn-hover w-100">Purchase Ticket</a>
             </div>
           </div>
         </div>
@@ -174,7 +174,7 @@
                             {% endif %}"
                             alt="{{ item.title }}" />
                         </a>
-                        <span class="bookmark-icon" title="Bookmark"></span>
+                        <span class="bookmark-icon d-flex align-items-center justify-content-between"><i class="fa-regular fa-bookmark"></i></span>
                       </div>
                       <div class="event-content">
                         <a href="{{ item.get_absolute_url }}" class="event-title mb-1">{{ item.title }}</a>

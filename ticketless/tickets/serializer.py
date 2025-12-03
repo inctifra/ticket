@@ -93,6 +93,7 @@ class OrderSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
     items = OrderItemSerializer(many=True)
     status_display = serializers.CharField(source="get_status_display", read_only=True)
+    delete_path = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
@@ -109,6 +110,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "paid_at",
             "meta",
             "items",
+            "delete_path",
         ]
         read_only_fields = ["id", "created_at", "paid_at"]
 
@@ -125,6 +127,9 @@ class OrderSerializer(serializers.ModelSerializer):
         order.total_amount = total
         order.save(update_fields=["total_amount"])
         return order
+
+    def get_delete_path(self, obj):
+        return obj.delete_url()
 
 
 class TicketSerializer(serializers.ModelSerializer):

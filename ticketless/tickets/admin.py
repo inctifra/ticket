@@ -50,45 +50,34 @@ class TicketInline(admin.TabularInline):
 class TicketTypeAdmin(admin.ModelAdmin):
     list_display = (
         "name",
-        "event_id",
+        "event",
         "price",
-        "capacity",
         "per_ticket_capacity",
         "is_active",
-        "remaining_display",
         "created_at",
     )
     list_filter = ("is_active",)
-    search_fields = ("name", "event_id")
-    ordering = ("position",)
+    search_fields = ("name", )
+    ordering = ("id",)
     readonly_fields = ("created_at", "updated_at")
+    list_display_links = ("name", "event")
     fieldsets = (
         (
             None,
             {
                 "fields": (
-                    "event_id",
+                    "event",
                     "name",
                     "description",
                     "price",
-                    "capacity",
                     "per_ticket_capacity",
                     "is_active",
-                    "position",
                 )
             },
         ),
         ("Timestamps", {"fields": ("created_at", "updated_at")}),
     )
 
-    def remaining_display(self, obj):
-        inv = getattr(obj, "inventory", None)
-        if not inv:
-            return "-"
-        color = "green" if inv.remaining > 0 else "red"
-        return format_html("<b style='color:{}'>{}</b>", color, inv.remaining)
-
-    remaining_display.short_description = "Remaining"
 
 
 
@@ -134,7 +123,7 @@ class OrderAdmin(admin.ModelAdmin):
     mark_as_paid.short_description = "Mark selected orders as Paid"
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        return request.user.is_superuser
 
 
 

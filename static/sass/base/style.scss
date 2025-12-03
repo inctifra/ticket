@@ -1100,6 +1100,13 @@ body {
   line-height: 46px;
   border-radius: 30px;
   transition: all 0.4s;
+  i {
+    z-index: 102;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .bookmark-icon:before,
@@ -1114,12 +1121,10 @@ body {
 }
 
 .bookmark-icon:before {
-  content: "\f02e";
   transform: scale(0.95);
 }
 
 .bookmark-icon:after {
-  content: "\f02e";
   opacity: 0;
   transform: scale(0.3);
   font-weight: 900;
