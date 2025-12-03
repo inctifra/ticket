@@ -54,6 +54,9 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.1.0",
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1",
     "@iconscout/unicons": "^4.2.0",
     "@tabler/icons-webfont": "^3.35.0",
     "axios": "^1.12.2",

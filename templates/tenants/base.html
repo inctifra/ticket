@@ -2,16 +2,21 @@
 
 {% load render_bundle from webpack_loader %}
 
-{% block title %}Ticketless.io | {{ request.tenant.schema_name|title }}{% endblock %}
+{% block title %}
+  Ticketless.io | {{ request.tenant.schema_name|title }}
+{% endblock %}
 {% block css %}
   {{ block.super }}
   {% render_bundle 'tenants' 'css' %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 {% endblock %}
 {% block javascript %}
   {{ block.super }}
   {% render_bundle 'tenants' 'js' attrs='defer' %}
 {% endblock %}
-{% block bodyclass %}d-flex flex-column h-100{% endblock %}
+{% block bodyclass %}
+  d-flex flex-column h-100
+{% endblock %}
 {% block header %}
   {% include 'components/header/tenants.html' %}
 {% endblock %}

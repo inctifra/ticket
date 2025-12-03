@@ -12,3 +12,10 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 // Custom shared scripts
 
+// import { library, dom } from '@fortawesome/fontawesome-svg-core';
+// import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+
+// library.add(faLocationDot);
+
+// // This watches the DOM and replaces <i> tags with SVG
+// dom.watch();

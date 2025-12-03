@@ -62,8 +62,9 @@
         </div>
         <div class="col-xl-4 col-lg-5 col-md-12">
           <div class="main-card event-right-dt">
-            <div class="bp-title">
+            <div class="bp-title d-flex align-items-center justify-content-between">
               <h4>Event Details</h4>
+                <span class="event-price me-2">Available tickets (33)</span>
             </div>
             <div class="time-left">
               <div class="countdown">
@@ -173,7 +174,7 @@
                             {% endif %}"
                             alt="{{ item.title }}" />
                         </a>
-                        <span class="bookmark-icon" title="Bookmark"><i class="bi bi-bookmark"></i></span>
+                        <span class="bookmark-icon" title="Bookmark"></span>
                       </div>
                       <div class="event-content">
                         <a href="{{ item.get_absolute_url }}" class="event-title mb-1">{{ item.title }}</a>
