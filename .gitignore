@@ -13,6 +13,7 @@ http/
 __pycache__/
 *.py[cod]
 *$py.class
+ticketless/media/
 
 # C extensions
 *.so
