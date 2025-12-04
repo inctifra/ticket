@@ -36,7 +36,6 @@ class CanScanTickets(permissions.BasePermission):
         return request.user.has_perm("tickets.scan_tickets", obj)
 
 
-
 class CanViewEventReports(permissions.BasePermission):
     """
     Custom permission to only allow users with 'view_event_reports' permission
@@ -45,5 +44,3 @@ class CanViewEventReports(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return request.user.has_perm("tickets.view_event_reports", obj)
-
-

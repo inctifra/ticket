@@ -6,17 +6,16 @@ export function setupAjaxForm(selector, { onSuccess, onError } = {}) {
 
     const form = $(this);
     const submitBtn = form.find('[type="submit"]');
-
     const originalBtnHTML = submitBtn.html();
 
     submitBtn.prop("disabled", true).html(`
-      <div class="d-flex align-items-center justify-content-center">
-        <span class="spinner-border spinner-border-md me-2" role="status" aria-hidden="true"></span>
-        <span>Processing...</span>
+      <div class="d-flex align-items-center justify-content-center w-100 h-100 position-relative">
+        <span class="spinner-border spinner-border-md text-white me-2" role="status" aria-hidden="true"></span>
       </div>
     `);
 
     const formData = new FormData(this);
+    const formValues = Object.fromEntries(formData.entries());
     clearFieldErrors(form);
 
     try {
@@ -27,25 +26,27 @@ export function setupAjaxForm(selector, { onSuccess, onError } = {}) {
       const { data } = await apiWithHeaders({
         "Content-Type": "multipart/form-data",
       }).post(form.attr("action"), formData);
+
       if (data.success === false) {
         showFieldErrors(form, data.errors);
-        if (onError) onError(data);
+        if (onError) onError(data, formValues);
         return;
       }
 
-      if (onSuccess) onSuccess(data);
+      if (onSuccess) onSuccess(data, formValues);
     } catch (err) {
       console.error("AJAX error:", err);
 
       if (err.response?.data?.errors) {
         showFieldErrors(form, err.response.data.errors);
-        if (onError) onError(err.response.data);
+        if (onError) onError(err.response.data, formValues);
       }
     } finally {
       submitBtn.prop("disabled", false).html(originalBtnHTML);
     }
   });
 }
+
 
 function clearFieldErrors(form) {
   form.find(".error-message").remove();

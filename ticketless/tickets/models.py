@@ -1,12 +1,12 @@
 import uuid
 from io import BytesIO
 
-# import qrcode
-from qr_code import qrcode
+import qrcode
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.text import slugify
 
 from ticketless.tickets.utils import upload_event_image_path
@@ -60,7 +60,6 @@ class Event(models.Model):
     def __str__(self):
         return f"{self.title} ({self.start_at.date()})"
 
-
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = str(slugify(self.title) + str(uuid.uuid4()))
@@ -68,6 +67,47 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         return reverse("tenants:event_detail", kwargs={"slug": self.slug})
+
+    @property
+    def is_expired(self):
+        """
+        Returns True if the event has already ended.
+        Returns False if the event has no end date or is still upcoming.
+        """
+        if not self.end_at:
+            return False
+        return timezone.now() > self.end_at
+
+    @property
+    def duration(self):
+        """
+        Returns the duration of the event as a timedelta object.
+        If end_at is not set, returns None.
+        """
+        if self.end_at:
+            return self.end_at - self.start_at
+        return None
+
+    @property
+    def duration_str(self):
+        """
+        Returns a human-readable duration string like '1h 30m'.
+        """
+        if not self.end_at:
+            return "N/A"
+
+        delta = self.end_at - self.start_at
+        total_seconds = int(delta.total_seconds())
+        hours, remainder = divmod(total_seconds, 3600)
+        minutes, _ = divmod(remainder, 60)
+
+        parts = []
+        if hours:
+            parts.append(f"{hours} h")
+        if minutes:
+            parts.append(f"{minutes} m")
+        return " ".join(parts)
+
 
 class EventImage(models.Model):
     event = models.ForeignKey(Event, related_name="images", on_delete=models.CASCADE)
@@ -85,7 +125,9 @@ class TicketType(models.Model):
     Lives in tenant schema. Links to public Event by id (no FK).
     """
 
-    id = models.BigAutoField(primary_key=True, editable=False, unique=True, db_index=True)
+    id = models.BigAutoField(
+        primary_key=True, editable=False, unique=True, db_index=True
+    )
     event = models.ForeignKey(
         Event,
         on_delete=models.SET_NULL,
@@ -163,7 +205,7 @@ class Order(models.Model):
             ("paid", "Paid"),
             ("cancelled", "Cancelled"),
             ("refunded", "Refunded"),
-            ("failed", "Failed")
+            ("failed", "Failed"),
         ),
         default="pending",
     )
@@ -177,9 +219,9 @@ class Order(models.Model):
         return f"Order for {self.email} {self.phone}"
 
     def delete_url(self):
-        return reverse("tenants:actions:delete_order_view", kwargs={
-            "order_id": str(self.id)
-        })
+        return reverse(
+            "tenants:actions:delete_order_view", kwargs={"order_id": str(self.id)}
+        )
 
 
 class OrderItem(models.Model):
@@ -187,13 +229,13 @@ class OrderItem(models.Model):
     ticket_type = models.ForeignKey(TicketType, on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField()
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    meta = models.JSONField(default=dict, blank=True)
 
     class Meta:
         indexes = [models.Index(fields=["ticket_type"])]
 
     def __str__(self):
         return str(self.ticket_type.name)
-
 
 
 class Ticket(models.Model):
@@ -205,24 +247,26 @@ class Ticket(models.Model):
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    order = models.ForeignKey("Order", related_name="tickets", on_delete=models.CASCADE)
-    ticket_type = models.ForeignKey("TicketType", on_delete=models.PROTECT)
-
+    order_item = models.ForeignKey(
+        "OrderItem",
+        related_name="tickets",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
     holder_name = models.CharField(max_length=255, blank=True)
     holder_email = models.EmailField(blank=True)
-
+    seats = models.PositiveIntegerField(default=1)
     token = models.CharField(max_length=128, unique=True, blank=True, null=True)
+    scan_token = models.CharField(max_length=128, unique=True, blank=True, null=True)
     barcode_data = models.CharField(max_length=255, blank=True)
-
     qr_code = models.ImageField(upload_to="tickets/qrcodes/", blank=True, null=True)
-
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="issued")
     issued_at = models.DateTimeField(auto_now_add=True)
     redeemed_at = models.DateTimeField(null=True, blank=True)
-
     event_title = models.CharField(max_length=255, blank=True)
     event_start = models.DateTimeField(null=True, blank=True)
+    sent_mail = models.BooleanField(default=False)
 
     class Meta:
         indexes = [
@@ -237,11 +281,8 @@ class Ticket(models.Model):
     # QR CODE AUTO GENERATION
     # -----------------------
     def save(self, *args, **kwargs):
-        # Generate token if missing
         if not self.token:
             self.token = uuid.uuid4().hex
-
-        # Generate QR code for the token
         if not self.qr_code:
             qr = qrcode.QRCode(
                 version=1,
@@ -251,15 +292,14 @@ class Ticket(models.Model):
             )
             qr.add_data(self.token)
             qr.make(fit=True)
-
             img = qr.make_image(fill_color="black", back_color="white")
-
             buffer = BytesIO()
             img.save(buffer, format="PNG")
             file_name = f"{self.token}.png"
             self.qr_code.save(file_name, ContentFile(buffer.getvalue()), save=False)
 
         super().save(*args, **kwargs)
+
 
 class TicketReservation(models.Model):
     """

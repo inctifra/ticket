@@ -1,0 +1,42 @@
+{% extends 'tenants/base.html' %}
+{% load webpack_static from webpack_loader %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+  <div class="card text-white d-flex">
+    <div class="row g-0">
+      <div class="col-md-8 position-relative">
+        <div class="position-absolute top-0 start-0 w-100 h-100"></div>
+        <div class="card-body position-relative">
+          <h5 class="card-title fw-bold text-black">{{ order_item.ticket_type.event.title|upper }}</h5>
+          <p class="card-text mb-1">TICKET (seats: {{ order_item.quantity }})</p>
+          <p class="card-text mb-1">{{ order_item.ticket_type.event.start_at|date:'D M Y' }}</p>
+          <p class="card-text">{{ order_item.ticket_type.event.start_at|date:'h:m A' }} - END</p>
+          <p>Ticket Holder Name: {{ order_item.meta.first_name|title }} {{ order_item.meta.last_name|title }}</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="">
+          {% if qr_image_base64 %}
+            <img src="data:image/png;base64,{{ qr_image_base64 }}" alt="{{ ticket.holder_name }}" />
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}

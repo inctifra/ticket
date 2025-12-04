@@ -57,7 +57,7 @@ class TicketTypeAdmin(admin.ModelAdmin):
         "created_at",
     )
     list_filter = ("is_active",)
-    search_fields = ("name", )
+    search_fields = ("name",)
     ordering = ("id",)
     readonly_fields = ("created_at", "updated_at")
     list_display_links = ("name", "event")
@@ -77,9 +77,6 @@ class TicketTypeAdmin(admin.ModelAdmin):
         ),
         ("Timestamps", {"fields": ("created_at", "updated_at")}),
     )
-
-
-
 
 
 @admin.register(InventoryBucket)
@@ -106,7 +103,7 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ("id", "email", "phone")
     date_hierarchy = "created_at"
     readonly_fields = ("created_at", "paid_at", "meta")
-    inlines = [OrderItemInline, TicketInline]
+    inlines = [OrderItemInline]
 
     actions = ["mark_as_refunded", "mark_as_paid"]
 
@@ -126,15 +123,13 @@ class OrderAdmin(admin.ModelAdmin):
         return request.user.is_superuser
 
 
-
-
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
     list_display = (
         "barcode_display",
         "holder_name",
         "holder_email",
-        "ticket_type",
+        "order_item",
         "status",
         "issued_at",
         "redeemed_at",
@@ -165,9 +160,7 @@ class TicketAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         # Protect tickets from deletion once issued
-        return False
-
-
+        return request.user.is_superuser
 
 
 @admin.register(TicketReservation)
@@ -193,7 +186,6 @@ class TicketReservationAdmin(admin.ModelAdmin):
     expired_display.short_description = "Status"
 
 
-
 @admin.register(ScanLog)
 class ScanLogAdmin(admin.ModelAdmin):
     list_display = ("token", "ticket", "scanned_by", "scanned_at", "success", "reason")
@@ -208,7 +200,6 @@ class ScanLogAdmin(admin.ModelAdmin):
         return format_html("<b style='color:{}'>{}</b>", color, icon)
 
     success_icon.short_description = "Valid"
-
 
 
 class UpcomingFilter(admin.SimpleListFilter):
@@ -235,6 +226,7 @@ class UpcomingFilter(admin.SimpleListFilter):
             end_of_day = start_of_day + datetime.timedelta(days=1)
             return queryset.filter(start_at__gte=start_of_day, start_at__lt=end_of_day)
         return queryset
+
 
 def make_published(modeladmin, request, queryset):
     updated = queryset.update(is_published=True)
@@ -301,6 +293,7 @@ def sync_to_public(event):
     or create/update a row in the public schema).
     """
 
+
 @admin.register(Event)
 class EventAdmin(GuardedModelAdmin):
     list_display = (
@@ -313,7 +306,7 @@ class EventAdmin(GuardedModelAdmin):
         "created_at",
         "updated_at",
         "preview_link",
-        "cover"
+        "cover",
     )
 
     list_editable = ("is_published",)
@@ -376,6 +369,7 @@ class EventAdmin(GuardedModelAdmin):
         return format_html('<a href="{}" target="_blank">Preview</a>', url)
 
     preview_link.short_description = "Preview"
+
     @transaction.atomic
     def save_model(self, request, obj, form, change):
         """
@@ -397,10 +391,11 @@ class EventAdmin(GuardedModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request)
+
     def has_change_permission(self, request, obj=None):
         if obj is not None and not request.user.is_superuser:
             return True
         return super().has_change_permission(request, obj)
+
     def changelist_view(self, request, extra_context=None):
         return super().changelist_view(request, extra_context=extra_context)
-

@@ -102,5 +102,3 @@ class EventLaunchRequest(models.Model):
         hours = remaining.seconds // 3600
         minutes = (remaining.seconds % 3600) // 60
         return f"{days}d {hours}h {minutes}m"
-
-

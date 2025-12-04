@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from rest_framework import serializers
 
+from .models import Event
 from .models import InventoryBucket
 from .models import Order
 from .models import OrderItem
@@ -13,24 +14,28 @@ from .models import TicketType
 User = get_user_model()
 
 
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = "__all__"
+
+
 class TicketTypeSerializer(serializers.ModelSerializer):
     """Serializer for TicketType model."""
 
-    event_id = serializers.IntegerField(help_text="ID of event in public schema.")
+    event = EventSerializer(read_only=True)
     total_capacity = serializers.SerializerMethodField()
 
     class Meta:
         model = TicketType
         fields = [
             "id",
-            "event_id",
+            "event",
             "name",
             "description",
-            "capacity",
             "per_ticket_capacity",
             "price",
             "is_active",
-            "position",
             "created_at",
             "updated_at",
             "total_capacity",
@@ -38,9 +43,9 @@ class TicketTypeSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "created_at", "updated_at", "total_capacity"]
 
     def get_total_capacity(self, obj):
-        if obj.capacity and obj.per_ticket_capacity:
-            return obj.capacity * obj.per_ticket_capacity
-        return obj.capacity
+        if obj.event.capacity and obj.per_ticket_capacity:
+            return obj.event.capacity * obj.per_ticket_capacity
+        return obj.event.capacity
 
 
 class InventoryBucketSerializer(serializers.ModelSerializer):

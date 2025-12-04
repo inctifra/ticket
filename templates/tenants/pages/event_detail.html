@@ -64,21 +64,25 @@
           <div class="main-card event-right-dt">
             <div class="bp-title d-flex align-items-center justify-content-between">
               <h4>Event Details</h4>
-              <span class="event-price me-2">Available tickets (33)</span>
+              <span class="event-price me-3">
+                Available tickets{% if not event.is_expired %}
+                  <strong>( {{ event.capacity|default:'0' }} )</strong>
+                {% endif %}
+              </span>
             </div>
             <div class="time-left">
-              <div class="countdown">
+              <div class="countdown" data-start-at="{{ event.start_at|date:'Y-m-d H:i:s' }}">
                 <div class="countdown-item">
-                  <span id="day"></span>days
+                  <span id="day"></span> Days
                 </div>
                 <div class="countdown-item">
-                  <span id="hour"></span>Hours
+                  <span id="hour"></span> Hours
                 </div>
                 <div class="countdown-item">
-                  <span id="minute"></span>Minutes
+                  <span id="minute"></span> Minutes
                 </div>
                 <div class="countdown-item">
-                  <span id="second"></span>Seconds
+                  <span id="second"></span> Seconds
                 </div>
               </div>
             </div>
@@ -128,26 +132,15 @@
                 <a href="#"><i class="fa-solid fa-location-dot me-2"></i>View Map</a>
               </div>
             </div>
-            <div class="select-tickets-block">
-              <h6>Select Tickets</h6>
-              <div class="select-ticket-action">
-                <div class="ticket-price">AUD $75.00</div>
-                <div class="quantity">
-                  <div class="counter">
-                    <span class="down">-</span>
-                    <input type="text" value="0" />
-                    <span class="up">+</span>
-                  </div>
-                </div>
-              </div>
-              <p>2 x pair hand painted leather earrings 1 x glass of bubbles / or coffee Individual grazing box / fruit cup</p>
-              <div class="xtotel-tickets-count">
-                <div class="x-title">1x Ticket(s)</div>
-                <h4>AUD <span>$0.00</span></h4>
-              </div>
-            </div>
+            <div class="select-tickets-block"></div>
             <div class="booking-btn">
-              <a href="{% url 'tenants:event_ticket_checkout' event.slug %}" class="main-btn btn-hover w-100">Purchase Ticket</a>
+              {% if event.capacity > 0 and not event.is_expired %}
+                <!-- Tickets still available -->
+                <a href="{% url 'tenants:event_ticket_checkout' event.slug %}" class="main-btn btn-hover w-100">Purchase Ticket</a>
+              {% else %}
+                <!-- Sold out -->
+                <a role="button" class="main-btn btn-hover w-100 disabled opacity-50 cursor-not-allowed">Sold Out</a>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -213,4 +206,8 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block footer %}
+
 {% endblock %}

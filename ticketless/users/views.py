@@ -53,7 +53,6 @@ class AjaxLoginView(LoginView):
     form_class = LoginForm
 
 
-
 ajax_login_view = AjaxLoginView.as_view()
 
 

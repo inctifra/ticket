@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 
 from .models import EventLaunchRequest
@@ -39,4 +38,3 @@ class EventLaunchRequestAdmin(admin.ModelAdmin):
         return obj.time_left
 
     time_left.short_description = "Time Left"
-

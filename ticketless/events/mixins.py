@@ -20,7 +20,6 @@ class JsonPermissionMixin:
         return f"You do not have permission to {action} {model._meta.verbose_name}."  # noqa: SLF001
 
 
-
 class AjaxableResponseMixin:
     """
     Mixin to add AJAX support to a form.
@@ -44,6 +43,3 @@ class AjaxableResponseMixin:
             }
             return JsonResponse(data)
         return response
-
-
-

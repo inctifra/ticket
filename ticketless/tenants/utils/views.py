@@ -1,9 +1,7 @@
+from django.http import HttpResponseForbidden
+from django.http import HttpResponseNotFound
+from django.http import HttpResponseServerError
 from django.shortcuts import render
-from django.http import (
-    HttpResponseForbidden,
-    HttpResponseNotFound,
-    HttpResponseServerError,
-)
 
 
 def error_403(request, exception=None):

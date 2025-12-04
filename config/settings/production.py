@@ -8,8 +8,9 @@ from sentry_sdk.integrations.logging import LoggingIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
 
 from .base import *  # noqa: F403
-from .base import APPS_DIR, REDIS_URL
+from .base import APPS_DIR
 from .base import DEBUG
+from .base import REDIS_URL
 from .base import SPECTACULAR_SETTINGS
 from .base import env
 
@@ -102,7 +103,6 @@ SPECTACULAR_SETTINGS["SERVERS"] = [
         "description": "Production server",
     },
 ]
-
 
 
 # LOGGING

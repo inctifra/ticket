@@ -8,11 +8,11 @@
 {% block css %}
   {{ block.super }}
   {% render_bundle 'tenants' 'css' %}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"  />
 {% endblock %}
 {% block javascript %}
   {{ block.super }}
   {% render_bundle 'tenants' 'js' attrs='defer' %}
+  <div id="paystack_key_url" data-url="{% url 'tenants:actions:load_paystack_view' %}"></div>
 {% endblock %}
 {% block bodyclass %}
   d-flex flex-column h-100

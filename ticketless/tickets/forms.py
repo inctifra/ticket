@@ -2,7 +2,8 @@ from django import forms
 
 from ticketless.tickets.widgets import TicketTypeSelect
 
-from .models import Event, TicketType
+from .models import Event
+from .models import TicketType
 
 
 class EventCreationForm(forms.ModelForm):
