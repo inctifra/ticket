@@ -1,5 +1,4 @@
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from ticketless.customers.models import Client
@@ -7,8 +6,7 @@ from ticketless.events.forms import EventLaunchRequestUpdateForm
 from ticketless.events.models import EventLaunchRequest
 
 
-@method_decorator(login_required(login_url="/"), name="dispatch")
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     template_name = "pages/dashboard/pages/home.html"
 
     def get_context_data(self, **kwargs):

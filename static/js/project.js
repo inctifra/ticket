@@ -126,8 +126,8 @@ function handleLaunchEvent() {
 function handleDashboardRedirect() {
   const $btn = $(".right-header__login__modal--btn");
   $btn.on("click", function (event) {
-    const url = $(this).data("dashboard-url");
-    if (!url) return;
+    let url = $(this).data("dashboard-url");
+    if (!url) url = "/accounts/login/";
     location.href = url;
   });
 }
