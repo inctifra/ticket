@@ -11,6 +11,11 @@ urlpatterns = [
         name="load_paystack_view",
     ),
     path(
+        "assign-event-ticket-scanning-permission",
+        views.assign_scanning_permission,
+        name="assign_ticket_scanning_permission_view",
+    ),
+    path(
         "initialize-ticket-purchase/<event_slug>/",
         views.initialize_ticket_purchase_view,
         name="initialize_ticket_purchase_view",

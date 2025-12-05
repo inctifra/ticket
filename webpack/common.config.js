@@ -54,6 +54,10 @@ module.exports = {
           from: path.resolve(__dirname, "../static/images/events"),
           to: "images/events",
         },
+        {
+          from: path.resolve(__dirname, "../static/images/profiles"),
+          to: "images/profiles",
+        },
       ],
     }),
     new Dotenv({ path: path.resolve(__dirname, "../.env") }),

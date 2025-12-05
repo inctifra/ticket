@@ -21,7 +21,6 @@
       </div>
     </div>
   </div>
-
   <div class="event-dt-block p-80">
     <div class="most-popular-posts">
       <div class="container">
@@ -40,9 +39,14 @@
                           <div class="main-card">
                             <div class="blog-block flex-slide">
                               <div class="blog-img-card left">
-                                <a href="{{ event.get_absolute_url }}" class="bbig-img w-100 h-100"><img
-                                  style="object-fit: contain; width: 100%; height: 300px; object-position: center;"
-                                  src="{{ event.cover.url }}" alt="{{ event.title }}" /></a>
+                                <a href="{{ event.get_absolute_url }}" class="bbig-img w-100 h-100">
+                                  <img style="object-fit: contain;
+                                              width: 100%;
+                                              height: 300px;
+                                              object-position: center"
+                                       src="{{ event.cover.url }}"
+                                       alt="{{ event.title }}" />
+                                </a>
                               </div>
                               <div class="blog-content right">
                                 <a href="{{ event.get_absolute_url }}" class="blog--title">{{ event.title }}</a>
@@ -51,17 +55,16 @@
                                   <span class="post-date me-2"> <strong class="fw-bolder">From</strong> {{ event.start_at }}</span>
                                   <span class="post-read-time"> <strong class="fw-bolder">To</strong> {{ event.end_at }}</span>
                                 </div>
-                                <a href="{{ event.get_absolute_url }}" class="main-btn h_50 btn-hover bt_40">View Event Detail</a>
+                                <a href="{{ event.get_absolute_url }}"
+                                   class="main-btn h_50 btn-hover bt_40">View Event Detail</a>
                               </div>
                             </div>
                           </div>
                         </div>
                       {% endfor %}
                     </div>
-
                     <!-- Pagination -->
                     <div class="swiper-pagination"></div>
-
                     <!-- Navigation Arrows -->
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>

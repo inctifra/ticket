@@ -29,13 +29,14 @@ export function setupAjaxForm(selector, { onSuccess, onError } = {}) {
 
       if (data.success === false) {
         showFieldErrors(form, data.errors);
-        if (onError) onError(data, formValues);
+        if (onError) onError(data, formValues, form);
         return;
       }
 
-      if (onSuccess) onSuccess(data, formValues);
+      if (onSuccess) onSuccess(data, formValues, form);
     } catch (err) {
       console.error("AJAX error:", err);
+      if(onError) onError(err, formValues, form)
 
       if (err.response?.data?.errors) {
         showFieldErrors(form, err.response.data.errors);

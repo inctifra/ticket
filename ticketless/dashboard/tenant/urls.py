@@ -11,4 +11,8 @@ urlpatterns = [
         "events/",
         include("ticketless.dashboard.tenant.events.urls", namespace="events"),
     ),
+    path(
+        "profiles/",
+        include("ticketless.dashboard.tenant.profiles.urls", namespace="profiles"),
+    ),
 ]

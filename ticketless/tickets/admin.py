@@ -7,7 +7,6 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.html import format_html
-from guardian.admin import GuardedModelAdmin
 
 from .models import Event
 from .models import InventoryBucket
@@ -295,7 +294,7 @@ def sync_to_public(event):
 
 
 @admin.register(Event)
-class EventAdmin(GuardedModelAdmin):
+class EventAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "start_at",
@@ -354,6 +353,7 @@ class EventAdmin(GuardedModelAdmin):
             },
         ),
     )
+
 
     actions = [make_published, make_unpublished, export_as_csv]
 

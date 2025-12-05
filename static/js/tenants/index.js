@@ -1,9 +1,10 @@
 import $ from "jquery";
 
 $(async function () {
-  const [{ default: Choices }, {formatCurrencyDynamic}] = await Promise.all([
+  const [{ default: Choices }, {formatCurrencyDynamic}, {initDynamicDataTable}] = await Promise.all([
     import("choices.js"),
     import("../libs/formatter"),
+    import("../libs/tables"),
     import("./auth"),
     import("../../sass/tenants/project.scss"),
     import("bootstrap/dist/css/bootstrap.min.css"),
@@ -14,6 +15,7 @@ $(async function () {
     import("./core"),
     import("choices.js/src/styles/choices"),
     import("./payments/scripts"),
+    import("./utils")
   ]);
 
   if ($(".selectpicker").get(0)) {
@@ -55,5 +57,7 @@ $(async function () {
   }
 
   formatCurrencyDynamic()
+
+  initDynamicDataTable("#staff-request-table")
 
 });

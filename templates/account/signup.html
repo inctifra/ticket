@@ -1,0 +1,73 @@
+{% extends 'account/base.html' %}
+
+{% load webpack_static from webpack_loader %}
+
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-md-10">
+        <div class="app-top-items">
+          {% include 'account/logo.html' %}
+          <div class="app-top-right-link">
+            Already have an account?<a class="sidebar-register-link" href="{% url 'account_login' %}">Sign In</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-lg-6 col-md-7">
+        <div class="registration">
+          <form action="{% url 'account_signup' %}" method="post">
+            {% csrf_token %}
+            <h2 class="registration-title">Sign up to Ticketless</h2>
+            {% if form.non_field_errors %}<div class="alert alert-danger mt-3">{{ form.non_field_errors }}</div>{% endif %}
+            <div class="row mt-3">
+              <div class="col-lg-12 col-md-12">
+                <div class="form-group mt-4">
+                  <label class="form-label">
+                    {{ form.email.label }} <span class="text-danger">*</span>
+                  </label>
+                  {% render_field form.email|attr:'class:form-control h_50' %}
+                  {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12">
+                <div class="form-group mt-4">
+                  <label class="form-label">
+                    {{ form.password1.label }} <span class="text-danger">*</span>
+                  </label>
+                  <div class="loc-group position-relative">
+                    {% render_field form.password1|attr:'class:form-control h_50' %}
+                    <span class="pass-show-eye"><i class="fas fa-eye-slash"></i></span>
+                  </div>
+                  {% if form.password1.errors %}<div class="text-danger small mt-1">{{ form.password1.errors }}</div>{% endif %}
+                  {% if form.password1.help_text %}
+                    <div class="p-1 text-muted small">{{ form.password1.help_text|safe }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12">
+                <div class="form-group mt-4">
+                  <label class="form-label">
+                    {{ form.password2.label }} <span class="text-danger">*</span>
+                  </label>
+                  <div class="loc-group position-relative">
+                    {% render_field form.password2|attr:'class:form-control h_50' %}
+                    <span class="pass-show-eye"><i class="fas fa-eye-slash"></i></span>
+                  </div>
+                  {% if form.password2.errors %}<div class="text-danger small mt-1">{{ form.password2.errors }}</div>{% endif %}
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12">
+                <button class="main-btn btn-hover w-100 mt-4" type="submit">Sign Up</button>
+              </div>
+            </div>
+            <div class="agree-text">
+              By clicking "Sign up", you agree to Barren
+              <a href="#">Terms & Conditions</a> and have read the
+              <a href="#">Privacy Policy</a>.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

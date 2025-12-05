@@ -73,8 +73,10 @@
     "jquery": "^3.7.1",
     "mixitup": "^3.3.2",
     "owl.carousel": "^2.3.4",
+    "select2": "4.1.0-rc.0",
     "swiper": "^12.0.3",
     "terser-webpack-plugin": "^5.3.14",
+    "toaster-ui": "^1.1.5",
     "webpackbar": "^7.0.0"
   }
 }

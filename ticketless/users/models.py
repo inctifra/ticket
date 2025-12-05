@@ -43,5 +43,7 @@ class Profile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    role = models.CharField(max_length=10, choices=(("S", "Scanner"),), blank=True)
+
     def __str__(self):
         return f"Profile of {self.user.email}"

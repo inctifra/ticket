@@ -1,0 +1,100 @@
+<div class="modal fade"
+     id="inviteStaffModal"
+     tabindex="-1"
+     aria-labelledby="inviteTeamModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inviteTeamModalLabel">Generate Staff Registration Link</h5>
+        <button type="button"
+                class="close-model-btn"
+                data-bs-dismiss="modal"
+                aria-label="Close">
+          <i class="uil uil-multiply"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="model-content main-form">
+          <div class="form-group mt-30">
+            <label class="form-label">Select the role for this registration link*</label>
+            <div class="dropdown bootstrap-select">
+              <select class="selectpicker" title="Select Role">
+                <option value="staff">Staff Member</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group mt-30">
+            <div class="d-flex align-items-start">
+              <div class="d-flex flex-column">
+                <label class="color-black fw-bold mb-0">Deactivate account upon registration</label>
+                <p id="account-desc" class="mt-2 fs-14 d-block mb-0">
+                  The user will be able to log in only after you grant permission.
+                </p>
+                <label class="btn-switch mt-2">
+                  <input type="checkbox" id="deactivate-toggle" checked />
+                  <span class="checkbox-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button"
+                class="co-main-btn min-width btn-hover h_40"
+                data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="main-btn min-width btn-hover h_40">Generate Link</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade"
+     id="assignScannerPermissionModal"
+     tabindex="-1"
+     aria-labelledby="assignScannerPermissionModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form action="{% url 'tenants:actions:assign_ticket_scanning_permission_view' %}"
+          method="post">
+      {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="assignScannerPermissionModalLabel">Assign scanning permission to the event</h5>
+        </div>
+        <div class="modal-body">
+          <div class="model-content main-form">
+            <div class="form-group mt-30">
+              <label class="form-label">Select event to assign*</label>
+              <div class="dropdown bootstrap-select">
+                {% render_field assign_scanning_permission_form.event|attr:'class:form-control form-select' %}
+              </div>
+            </div>
+            <div class="form-group mt-30">
+              <label class="form-label">Select the users to grant the permission*</label>
+              <div class="dropdown bootstrap-select">
+                {% render_field assign_scanning_permission_form.users|attr:'class:form-control py-2'|attr:'multiple' %}
+              </div>
+            </div>
+            <div class="form-group mt-30">
+              <div class="d-flex align-items-start">
+                <div class="d-flex flex-column">
+                  <label class="color-black fw-bold mb-0">Restrict account until scanning permission is activated</label>
+                  <p id="account-desc" class="mt-2 fs-14 d-block mb-0">
+                    If enabled, the user cannot log in until you manually activate their account and grant scanning permission.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button"
+                  class="co-main-btn min-width btn-hover h_40"
+                  data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="main-btn min-width btn-hover h_40">Generate Link</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

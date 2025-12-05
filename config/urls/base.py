@@ -31,6 +31,7 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path("events/", include("ticketless.events.urls", namespace="events")),
     path("api/", include("config.urls.api_router", namespace="api")),
+    path("select2/", include("django_select2.urls")),
 ]
 
 if settings.DEBUG:

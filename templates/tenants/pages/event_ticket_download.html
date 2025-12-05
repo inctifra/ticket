@@ -1,10 +1,8 @@
 {% extends 'tenants/base.html' %}
+
 {% load webpack_static from webpack_loader %}
 
-{% block title %}
-  {{ block.super }} | {{ event.title }}
-{% endblock %}
-
+{% block title %}{{ block.super }} | {{ event.title }}{% endblock %}
 {% block content %}
   <div class="event-dt-block p-80">
     <div class="container">
@@ -14,26 +12,22 @@
             <div class="main-card">
               <div class="booking-confirmed-top text-center p_30">
                 <div class="booking-confirmed-img mt-4">
-                  <img src="{% webpack_static 'images/events/confirmed.png' %}" alt="{{ order_item.ticket_type.event.title }}" />
+                  <img src="{% webpack_static 'images/events/confirmed.png' %}"
+                       alt="{{ order_item.ticket_type.event.title }}" />
                 </div>
                 <h4>Ticket Purchase Successful</h4>
                 <p class="ps-lg-4 pe-lg-4">
-                  Your ticket has been successfully purchased.<br />The details of your booking are shown below.
+                  Your ticket has been successfully purchased.
+                  <br />
+                  The details of your booking are shown below.
                 </p>
               </div>
-
               <div class="booking-confirmed-bottom">
                 <div class="booking-confirmed-bottom-bg p_30">
                   <div class="event-order-dt">
                     <div class="event-thumbnail-img">
-                      <img src="
-                      {% if order_item.ticket_type.event.cover %}
-                          {{ order_item.ticket_type.event.cover.url }}
-                        {% else %}
-                          {% webpack_static 'images/events/placeholder.jpg' %}
-                        {% endif %}
-                      "
-                        alt="{{ order_item.ticket_type.event.title }}" />
+                      <img src=" {% if order_item.ticket_type.event.cover %} {{ order_item.ticket_type.event.cover.url }} {% else %} {% webpack_static 'images/events/placeholder.jpg' %} {% endif %} "
+                           alt="{{ order_item.ticket_type.event.title }}" />
                     </div>
                     <div class="event-order-dt-content">
                       <h5>{{ order_item.ticket_type.event.title|title }}</h5>
@@ -43,14 +37,17 @@
                         <i class="fa-solid fa-ticket rotate-icon"></i>
                         <span class="booking-count-tickets mx-2">{{ order_item.quantity }}</span> Ticket{{ order_item.quantity|pluralize }}
                       </div>
-
                       <div class="booking-total-grand">
-                        Total: <span class="currency" data-amount="{{ order_item.order.total_amount }}" data-currency="{{ order_item.order.currency }}">{{ order_item.order.total_amount }}</span>
+                        Total: <span class="currency"
+       data-amount="{{ order_item.order.total_amount }}"
+       data-currency="{{ order_item.order.currency }}">{{ order_item.order.total_amount }}</span>
                       </div>
                     </div>
                   </div>
-
-                  <a role="button" id="download-ticket" data-href="{% url 'tenants:actions:ticket_download_view' order_item.id %}" class="main-btn btn-hover h_50 w-100 mt-5">
+                  <a role="button"
+                     id="download-ticket"
+                     data-href="{% url 'tenants:actions:ticket_download_view' order_item.id %}"
+                     class="main-btn btn-hover h_50 w-100 mt-5">
                     <i class="fa-solid fa-ticket rotate-icon me-3"></i>
                     Download Ticket
                   </a>
@@ -63,7 +60,4 @@
     </div>
   </div>
 {% endblock %}
-
-{% block footer %}
-
-{% endblock %}
+{% block footer %}{% endblock %}

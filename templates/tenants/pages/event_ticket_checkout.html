@@ -1,12 +1,12 @@
 {% extends 'tenants/base.html' %}
+
 {% load webpack_static from webpack_loader %}
 
-{% block title %}
-  {{ block.super }} | {{ event.title }}
-{% endblock %}
-
+{% block title %}{{ block.super }} | {{ event.title }}{% endblock %}
 {% block content %}
-  <form id="checkout-form" action="{% url 'tenants:actions:initialize_ticket_purchase_view' event.slug %}" method="POST">
+  <form id="checkout-form"
+        action="{% url 'tenants:actions:initialize_ticket_purchase_view' event.slug %}"
+        method="POST">
     {% csrf_token %}
     <div class="event-dt-block p-80">
       <div class="container">
@@ -18,12 +18,12 @@
                 <div class="bp-title">
                   <h4>Billing information</h4>
                 </div>
-
                 <div class="bp-content bp-form">
                   <div class="row">
                     <div class="col-lg-6">
                       <div class="form-group mt-4">
-                        <label class="form-label" for="{{ ticket_purchase_form.first_name.id_for_label }}">
+                        <label class="form-label"
+                               for="{{ ticket_purchase_form.first_name.id_for_label }}">
                           {{ ticket_purchase_form.first_name.label }}
                           *
                         </label>
@@ -31,10 +31,10 @@
                         {{ ticket_purchase_form.first_name.errors }}
                       </div>
                     </div>
-
                     <div class="col-lg-6">
                       <div class="form-group mt-4">
-                        <label class="form-label" for="{{ ticket_purchase_form.last_name.id_for_label }}">
+                        <label class="form-label"
+                               for="{{ ticket_purchase_form.last_name.id_for_label }}">
                           {{ ticket_purchase_form.last_name.label }}
                           *
                         </label>
@@ -42,10 +42,10 @@
                         {{ ticket_purchase_form.last_name.errors }}
                       </div>
                     </div>
-
                     <div class="col-lg-6">
                       <div class="form-group mt-4">
-                        <label class="form-label" for="{{ ticket_purchase_form.email.id_for_label }}">
+                        <label class="form-label"
+                               for="{{ ticket_purchase_form.email.id_for_label }}">
                           {{ ticket_purchase_form.email.label }}
                           *
                         </label>
@@ -53,10 +53,10 @@
                         {{ ticket_purchase_form.email.errors }}
                       </div>
                     </div>
-
                     <div class="col-lg-6">
                       <div class="form-group mt-4">
-                        <label class="form-label" for="{{ ticket_purchase_form.phone_number.id_for_label }}">
+                        <label class="form-label"
+                               for="{{ ticket_purchase_form.phone_number.id_for_label }}">
                           {{ ticket_purchase_form.phone_number.label }}
                           *
                         </label>
@@ -64,11 +64,11 @@
                         {{ ticket_purchase_form.phone_number.errors }}
                       </div>
                     </div>
-
                     <!-- TICKET TYPE -->
                     <div class="col-lg-6 mt-4">
                       <div class="form-group">
-                        <label class="form-label" for="{{ ticket_purchase_form.ticket_type.id_for_label }}">
+                        <label class="form-label"
+                               for="{{ ticket_purchase_form.ticket_type.id_for_label }}">
                           {{ ticket_purchase_form.ticket_type.label }}
                           *
                         </label>
@@ -76,11 +76,11 @@
                         {{ ticket_purchase_form.ticket_type.errors }}
                       </div>
                     </div>
-
                     <!-- QUANTITY -->
                     <div class="col-lg-6">
                       <div class="form-group mt-4">
-                        <label class="form-label" for="{{ ticket_purchase_form.quantity.id_for_label }}">
+                        <label class="form-label"
+                               for="{{ ticket_purchase_form.quantity.id_for_label }}">
                           {{ ticket_purchase_form.quantity.label }}
                           *
                         </label>
@@ -93,45 +93,37 @@
               </div>
             </div>
           </div>
-
           <div class="col-xl-4 col-lg-12 col-md-12">
             <div class="main-card order-summary">
               <div class="bp-title">
                 <h4>Ticket Payment Summary</h4>
               </div>
-
               <div class="order-summary-content p_30">
                 <div class="event-order-dt">
                   <div class="event-thumbnail-img">
                     <img src="{{ event.cover.url }}" alt="{{ event.title }}" />
                   </div>
-
                   <div class="event-order-dt-content">
                     <h5>{{ event.title }}</h5>
                     <span>{{ event.start_at|date:'D, M d, Y g:i A' }}</span>
                     <div class="category-type">{{ event.venue_name|default:'Online Event' }}</div>
                   </div>
                 </div>
-
                 <div class="order-total-block">
                   <div class="order-total-dt">
                     <div class="order-text">Tickets</div>
                     <div class="order-number" id="summary-qty">1</div>
                   </div>
-
                   <div class="order-total-dt">
                     <div class="order-text">Subtotal</div>
                     <div class="order-number" id="summary-subtotal">KES 0.00</div>
                   </div>
-
                   <div class="divider-line"></div>
-
                   <div class="order-total-dt">
                     <div class="order-text">Total</div>
                     <div class="order-number ttl-clr" id="summary-total">KES 0.00</div>
                   </div>
                 </div>
-
                 <div class="confirmation-btn">
                   <button class="main-btn btn-hover h_50 w-100 mt-5" type="submit">Confirm & Pay</button>
                   <span>Price includes applicable taxes</span>
@@ -146,7 +138,4 @@
     </div>
   </form>
 {% endblock %}
-
-{% block footer %}
-
-{% endblock %}
+{% block footer %}{% endblock %}

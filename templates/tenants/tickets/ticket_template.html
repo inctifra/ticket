@@ -1,14 +1,9 @@
 {% extends 'tenants/base.html' %}
+
 {% load webpack_static from webpack_loader %}
 
-{% block title %}
-
-{% endblock %}
-
-{% block header %}
-
-{% endblock %}
-
+{% block title %}{% endblock %}
+{% block header %}{% endblock %}
 {% block content %}
   <div class="card text-white d-flex">
     <div class="row g-0">
@@ -25,18 +20,13 @@
       <div class="col-md-4">
         <div class="">
           {% if qr_image_base64 %}
-            <img src="data:image/png;base64,{{ qr_image_base64 }}" alt="{{ ticket.holder_name }}" />
+            <img src="data:image/png;base64,{{ qr_image_base64 }}"
+                 alt="{{ ticket.holder_name }}" />
           {% endif %}
         </div>
       </div>
     </div>
   </div>
 {% endblock %}
-
-{% block modal %}
-
-{% endblock %}
-
-{% block footer %}
-
-{% endblock %}
+{% block modal %}{% endblock %}
+{% block footer %}{% endblock %}

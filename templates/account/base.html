@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load webpack_static from webpack_loader %}
+
+{% block header %}{% endblock %}
+{% block main %}
+  <div class="form-wrapper">
+    <div class="app-form">
+      <div class="app-form-sidebar">
+        <div class="sidebar-sign-logo">
+          <img src="{% webpack_static 'images/logos/ticketless.png' %}"
+               alt="{{ request.tenant }}" />
+        </div>
+        <div class="sign_sidebar_text">
+          <h3 class="text-white">Your Events. Your Tickets. Made Easy.</h3>
+        </div>
+      </div>
+      <div class="app-form-content">
+        {% block content %}{% endblock %}
+        <div class="copyright-footer">© 2025, Ticketless. All rights reserved.</div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block footer %}{% endblock %}
+{% block modal %}{% endblock %}

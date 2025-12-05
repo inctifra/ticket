@@ -2,6 +2,7 @@ import base64
 import json
 from io import BytesIO
 
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -13,7 +14,9 @@ from django.views.decorators.http import require_POST
 from weasyprint import HTML
 
 from config.settings.base import env
+from ticketless.dashboard.tenant.forms import AssignScanningPermissionForm
 from ticketless.tenants.mails import send_ticket_email
+from ticketless.tenants.tasks import assign_event_scanning_permission
 from ticketless.tenants.tasks import create_or_retrieve_ticket_for_order
 from ticketless.tenants.tasks import create_ticket_order
 from ticketless.tenants.tasks import create_ticket_order_item
@@ -125,3 +128,17 @@ def download_ticket_view(request, order_item_id):
     response = HttpResponse(pdf_data, content_type="application/pdf")
     response["Content-Disposition"] = f'attachment; filename="{filename}"'
     return response
+
+
+@login_required
+@require_POST
+def assign_scanning_permission(request):
+    form = AssignScanningPermissionForm(
+        request.POST, manager=request.user, request=request
+    )
+    if not form.is_valid():
+        return JsonResponse({"errors": form.errors}, safe=False, status=400)
+    event = form.cleaned_data.get("event")
+    assignee = form.cleaned_data.get("users")
+    assign_event_scanning_permission(event, assignee, "scan_tickets")
+    return JsonResponse({})

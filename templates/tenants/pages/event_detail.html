@@ -1,10 +1,8 @@
 {% extends 'tenants/base.html' %}
+
 {% load webpack_static from webpack_loader %}
 
-{% block title %}
-  {{ block.super }} | {{ event.title }}
-{% endblock %}
-
+{% block title %}{{ block.super }} | {{ event.title }}{% endblock %}
 {% block content %}
   <div class="event-dt-block p-80">
     <div class="container">
@@ -16,7 +14,9 @@
               <span class="event-date">{{ event.start_at|date:'d' }}</span>
             </div>
             <div class="event-top-dt">
-              <h3 class="event-main-title">{{ event.title }} {{ event.start_at|date:'l F j, Y' }} at {{ event.start_at|date:'gA' }}</h3>
+              <h3 class="event-main-title">
+                {{ event.title }} {{ event.start_at|date:'l F j, Y' }} at {{ event.start_at|date:'gA' }}
+              </h3>
               <div class="event-top-info-status">
                 <span class="event-type-name"><i class="fa-solid fa-location-dot"></i>Venue Event</span>
                 <span class="event-type-name details-hr">Starts on <span class="ev-event-date">{{ event.start_at|date:'D, M d, Y g:i A' }}</span></span>
@@ -28,17 +28,18 @@
         <div class="col-xl-8 col-lg-7 col-md-12">
           <div class="main-event-dt">
             <div class="event-img">
-              <img src="{% if event.cover %}
-                  {{ event.cover.url }}
-                {% else %}
-                  {% webpack_static 'images/events/placeholder.jpg' %}
-                {% endif %}"
-                alt="{{ event.title }}"
-                style="width: 65%; height:50%" />
+              <img src="{% if event.cover %} {{ event.cover.url }} {% else %} {% webpack_static 'images/events/placeholder.jpg' %} {% endif %}"
+                   alt="{{ event.title }}"
+                   style="width: 65%;
+                          height:50%" />
             </div>
             <div class="share-save-btns dropdown">
-              <button class="sv-btn me-2"><i class="fa-regular fa-bookmark me-2"></i>Save</button>
-              <button class="sv-btn" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-share-nodes me-2"></i>Share</button>
+              <button class="sv-btn me-2">
+                <i class="fa-regular fa-bookmark me-2"></i>Save
+              </button>
+              <button class="sv-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-share-nodes me-2"></i>Share
+              </button>
               <ul class="dropdown-menu">
                 <li>
                   <a class="dropdown-item" href="#"><i class="fa-brands fa-facebook me-3"></i>Facebook</a>
@@ -65,13 +66,13 @@
             <div class="bp-title d-flex align-items-center justify-content-between">
               <h4>Event Details</h4>
               <span class="event-price me-3">
-                Available tickets{% if not event.is_expired %}
-                  <strong>( {{ event.capacity|default:'0' }} )</strong>
-                {% endif %}
+                Available tickets
+                {% if not event.is_expired %}<strong>( {{ event.capacity|default:'0' }} )</strong>{% endif %}
               </span>
             </div>
             <div class="time-left">
-              <div class="countdown" data-start-at="{{ event.start_at|date:'Y-m-d H:i:s' }}">
+              <div class="countdown"
+                   data-start-at="{{ event.start_at|date:'Y-m-d H:i:s' }}">
                 <div class="countdown-item">
                   <span id="day"></span> Days
                 </div>
@@ -104,7 +105,10 @@
                 <h4>Date and Time</h4>
                 <h5>{{ event.start_at|date:'D, M d, Y g:i A' }}</h5>
                 <div class="add-to-calendar">
-                  <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-regular fa-calendar-days me-3"></i>Add to Calendar</a>
+                  <a href="#"
+                     role="button"
+                     data-bs-toggle="dropdown"
+                     aria-expanded="false"><i class="fa-regular fa-calendar-days me-3"></i>Add to Calendar</a>
                   <ul class="dropdown-menu">
                     <li>
                       <a class="dropdown-item" href="#"><i class="fa-brands fa-windows me-3"></i>Outlook</a>
@@ -136,21 +140,21 @@
             <div class="booking-btn">
               {% if event.capacity > 0 and not event.is_expired %}
                 <!-- Tickets still available -->
-                <a href="{% url 'tenants:event_ticket_checkout' event.slug %}" class="main-btn btn-hover w-100">Purchase Ticket</a>
+                <a href="{% url 'tenants:event_ticket_checkout' event.slug %}"
+                   class="main-btn btn-hover w-100">Purchase Ticket</a>
               {% else %}
                 <!-- Sold out -->
-                <a role="button" class="main-btn btn-hover w-100 disabled opacity-50 cursor-not-allowed">Sold Out</a>
+                <a role="button"
+                   class="main-btn btn-hover w-100 disabled opacity-50 cursor-not-allowed">Sold Out</a>
               {% endif %}
             </div>
           </div>
         </div>
-
         <div class="col-xl-12 col-lg-12 col-md-12">
           <div class="more-events">
             <div class="main-title position-relative">
               <h3>More Events</h3>
             </div>
-
             <!-- Swiper Container -->
             <div class="swiper moreEvents-slider">
               <div class="swiper-wrapper">
@@ -160,12 +164,8 @@
                     <div class="main-card mt-4">
                       <div class="event-thumbnail">
                         <a href="{{ item.get_absolute_url }}" class="thumbnail-img">
-                          <img src="{% if item.cover %}
-                              {{ item.cover.url }}
-                            {% else %}
-                              {% webpack_static 'images/events/placeholder.jpg' %}
-                            {% endif %}"
-                            alt="{{ item.title }}" />
+                          <img src="{% if item.cover %} {{ item.cover.url }} {% else %} {% webpack_static 'images/events/placeholder.jpg' %} {% endif %}"
+                               alt="{{ item.title }}" />
                         </a>
                         <span class="bookmark-icon d-flex align-items-center justify-content-between"><i class="fa-regular fa-bookmark"></i></span>
                       </div>
@@ -189,14 +189,11 @@
                     </div>
                   </div>
                 {% endfor %}
-
                 <!-- Add more swiper-slide blocks here -->
               </div>
-
               <!-- If you want navigation -->
               <div class="swiper-button-next"></div>
               <div class="swiper-button-prev"></div>
-
               <!-- If you want pagination -->
               <div class="swiper-pagination"></div>
             </div>
@@ -207,7 +204,4 @@
     </div>
   </div>
 {% endblock %}
-
-{% block footer %}
-
-{% endblock %}
+{% block footer %}{% endblock %}

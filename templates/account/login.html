@@ -1,0 +1,50 @@
+{% extends 'account/base.html' %}
+
+{% load webpack_static from webpack_loader %}
+
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-md-10">
+        <div class="app-top-items">
+          {% include "account/logo.html" %}
+          <div class="app-top-right-link">
+            Welcome back ?<a class="sidebar-register-link" href="{% url 'account_signup' %}">Sign up</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-lg-6 col-md-7">
+        <div class="registration">
+          <form action="{% url 'account_login' %}" method="post">
+            {% csrf_token %}
+            <h2 class="registration-title">Welcome back to {{ request.tenant.name|title }}</h2>
+            {% if form.non_field_errors %}<div class="alert alert-danger mt-3">{{ form.non_field_errors }}</div>{% endif %}
+            <div class="form-group mt-5">
+              <label class="form-label">
+                {{ form.login.label }} <span class="text-danger">*</span>
+              </label>
+              {% render_field form.login|attr:'class:form-control h_50' %}
+              {% if form.login.errors %}<div class="text-danger small mt-1">{{ form.login.errors }}</div>{% endif %}
+            </div>
+            <div class="form-group mt-4">
+              <label class="form-label">
+                {{ form.password.label }} <span class="text-danger">*</span>
+              </label>
+              <div class="loc-group position-relative">
+                {% render_field form.password|attr:'class:form-control h_50' %}
+                <span class="pass-show-eye"><i class="fas fa-eye-slash"></i></span>
+              </div>
+              {% if form.password.errors %}<div class="text-danger small mt-1">{{ form.password.errors }}</div>{% endif %}
+            </div>
+            <button class="main-btn btn-hover w-100 mt-4" type="submit">
+              Sign In <i class="fas fa-sign-in-alt ms-2"></i>
+            </button>
+          </form>
+          <div class="new-sign-link">
+            New to Ticketless?<a class="signup-link" href="{% url 'account_signup' %}">Sign up</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

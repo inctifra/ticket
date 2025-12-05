@@ -1,0 +1,138 @@
+<style>
+  div.dt-length select {
+    margin-right: 10px;
+    width: 70px;
+  }
+</style>
+<div class="nav my-event-tabs mt-4" role="tablist">
+  <button class="event-link active"
+          data-bs-toggle="tab"
+          data-bs-target="#events"
+          type="button"
+          role="tab"
+          aria-controls="events"
+          aria-selected="true">
+    <span class="event-count">1</span><span>Events</span>
+  </button>
+  <button class="event-link"
+          data-bs-toggle="tab"
+          data-bs-target="#staff"
+          type="button"
+          role="tab"
+          aria-controls="staff"
+          aria-selected="false">
+    <span class="event-count">2</span><span>Staff</span>
+  </button>
+  <button class="event-link"
+          data-bs-toggle="tab"
+          data-bs-target="#attending"
+          type="button"
+          role="tab"
+          aria-controls="attending"
+          aria-selected="false">
+    <span class="event-count">1</span><span>Attending Events</span>
+  </button>
+  <!-- NEW TAB -->
+  {% comment %} {% if request.user|is_owner_or_manager_filter %}
+    <button class="event-link" data-bs-toggle="tab" data-bs-target="#scanrequests" type="button" role="tab"><span class="event-count">{{ scan_requests_count }}</span><span>Scan Requests</span></button>
+  {% endif %} {% endcomment %}
+</div>
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="events" role="tabpanel">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="main-card mt-4">
+          <div class="card-top p-4">
+            <div class="card-event-img">
+              <img src="images/event-imgs/img-6.jpg" alt="" />
+            </div>
+            <div class="card-event-dt">
+              <h5>Step Up Open Mic Show</h5>
+              <div class="evnt-time">Thu, Jun 30, 2022 4:30 AM</div>
+              <div class="event-btn-group">
+                <button class="esv-btn saved-btn me-2">
+                  <i class="fa-regular fa-bookmark me-2"></i>Save
+                </button>
+                <button class="esv-btn me-2"
+                        onclick="window.location.href='online_event_detail_view.html'">
+                  <i class="fa-solid fa-arrow-up-from-bracket me-2"></i>View
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="staff" role="tabpanel">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="dashboard-wrap-content p-4">
+          <div class="d-md-flex flex-wrap align-items-center">
+            <div class="rs d-flex gap-2 ms-auto mt_r4">
+              <button class="main-btn btn-hover h_40 w-100"
+                      id="assignScannerPermissionModal">Assign scanning permission</button>
+              <button class="main-btn btn-hover h_40 w-100" id="inviteStaffModal">Invite Staff Member</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="table-card mt-2">
+            <div class="main-table p-3">
+              <div class="table-responsive">
+                <table id="staff-request-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Permission</th>
+                      <th scope="col">Last Login</th>
+                      <th scope="col">2FA Enable</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in profiles_requests %}
+                      <tr>
+                        <td>John Doe</td>
+                        <td>{{ item.user.email }}</td>
+                        <td>{{ item.get_role_display|lower|default:"null" }}</td>
+                        <td>20 May 22, 10.27 AM</td>
+                        <td>No</td>
+                        <td>
+                          <span class="action-btn disabled"><i class="fa-regular fa-eye"></i></span>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="attending" role="tabpanel">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="main-card mt-4">
+          <div class="card-top p-4">
+            <div class="card-event-img">
+              <img src="images/event-imgs/img-6.jpg" alt="" />
+            </div>
+            <div class="card-event-dt">
+              <h5>Step Up Open Mic Show</h5>
+              <div class="evnt-time">Thu, Jun 30, 2022 4:30 AM</div>
+              <div class="event-btn-group">
+                <button class="esv-btn me-2" onclick="window.location.href='invoice.html'">
+                  <i class="fa-solid fa-arrow-up-from-bracket me-2"></i>View Ticket
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

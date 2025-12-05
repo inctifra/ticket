@@ -348,3 +348,6 @@ class ScanLog(models.Model):
 
     def __str__(self):
         return self.token
+
+
+

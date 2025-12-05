@@ -58,7 +58,6 @@ SHARED_APPS = [
     "django.contrib.messages",
     "django.contrib.humanize",
     "django.contrib.staticfiles",
-    # MUST be here since it contains AUTH_USER_MODEL
     "ticketless.users",
     "allauth",
     "allauth.account",
@@ -73,6 +72,7 @@ SHARED_APPS = [
     "rest_framework_simplejwt",
     "drf_spectacular",
     "qr_code",
+    "guardian",
 ]
 
 THIRD_PARTY_APPS = [
@@ -83,7 +83,7 @@ THIRD_PARTY_APPS = [
     "django_extensions",
     "widget_tweaks",
     "corsheaders",
-    "guardian",
+    "django_select2",
 ]
 
 
@@ -91,6 +91,8 @@ TENANT_APPS = (
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "ticketless.tickets",
+    "ticketless.management",
+    "ticketless.dashboard.tenant.profiles",
 )
 
 
@@ -136,6 +138,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    "ticketless.dashboard.middleware.UserProfileMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls.tenants"
@@ -158,10 +161,12 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "ticketless.users.context_processors.allauth_settings",
                 "ticketless.events.context_processors.load_core_context",
+                "ticketless.dashboard.tenant.profiles.context_processors.load_profile_context_data",
             ],
             "builtins": [
                 "widget_tweaks.templatetags.widget_tweaks",
                 "guardian.templatetags.guardian_tags",
+                "ticketless.dashboard.templatetags.dashboard_tags",
             ],
         },
     },

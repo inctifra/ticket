@@ -82,9 +82,10 @@
               </div>
             </li>
             <li class="right-header__login__modal--btn">
-              <div class="profile__login">
+              <a {% if request.user|is_owner_or_manager_filter %} href="{% url 'tenants:dashboard:profiles:profile_view' %}" {% else %} role="button" {% endif %}
+                 class="profile__login">
                 <div class="ti ti-user"></div>
-              </div>
+              </a>
             </li>
           </ul>
         </div>

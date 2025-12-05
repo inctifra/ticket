@@ -2,9 +2,7 @@
 
 {% load render_bundle from webpack_loader %}
 
-{% block title %}
-  Ticketless.io | {{ request.tenant.schema_name|title }}
-{% endblock %}
+{% block title %}Ticketless.io | {{ request.tenant.schema_name|title }}{% endblock %}
 {% block css %}
   {{ block.super }}
   {% render_bundle 'tenants' 'css' %}
@@ -12,11 +10,10 @@
 {% block javascript %}
   {{ block.super }}
   {% render_bundle 'tenants' 'js' attrs='defer' %}
-  <div id="paystack_key_url" data-url="{% url 'tenants:actions:load_paystack_view' %}"></div>
+  <div id="paystack_key_url"
+       data-url="{% url 'tenants:actions:load_paystack_view' %}"></div>
 {% endblock %}
-{% block bodyclass %}
-  d-flex flex-column h-100
-{% endblock %}
+{% block bodyclass %}d-flex flex-column h-100{% endblock %}
 {% block header %}
   {% include 'components/header/tenants.html' %}
 {% endblock %}

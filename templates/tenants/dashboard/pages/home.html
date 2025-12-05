@@ -2,12 +2,10 @@
 
 {% block content %}
   <div class="row py-5 px-3">
-
     <div class="col text-center">
       <h2>Welcome to your Tenant Dashboard</h2>
       <p class="lead">Manage your events and tickets from here.</p>
     </div>
-
     <div class="col text-center">
       <h3>Your Events</h3>
       <ul class="list-group">
@@ -20,20 +18,21 @@
           <li class="list-group-item">No events found. Create one below!</li>
         {% endfor %}
       </ul>
-
-  </div>
-
-  <div class="row" style="width: 500px; margin: auto;">
-    <div class="card mx-3 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">Create New Event</h5>
-        <p class="card-text">Use the form below to create a new event for your tenant.</p>
-        <form method="post" id="event_creation_form" action="{% url 'tenants:dashboard:events:process_event_creation' %}" enctype="multipart/form-data">
-          {% csrf_token %}
-          {{ event_create_form.as_p }}
-          <button type="submit" class="btn btn-primary">Create Event</button>
-        </form>
+    </div>
+    <div class="row" style="width: 500px; margin: auto;">
+      <div class="card mx-3 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Create New Event</h5>
+          <p class="card-text">Use the form below to create a new event for your tenant.</p>
+          <form method="post"
+                id="event_creation_form"
+                action="{% url 'tenants:dashboard:events:process_event_creation' %}"
+                enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ event_create_form.as_p }}
+            <button type="submit" class="btn btn-primary">Create Event</button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-{% endblock %}
+  {% endblock %}
