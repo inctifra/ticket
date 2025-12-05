@@ -334,7 +334,7 @@ class ScanLog(models.Model):
     token = models.CharField(
         max_length=128,
         help_text="The scanned ticket token",
-    )  # scanned token
+    )
     scanned_by = models.ForeignKey(
         User,
         null=True,
@@ -342,12 +342,9 @@ class ScanLog(models.Model):
         on_delete=models.SET_NULL,
     )
     scanned_at = models.DateTimeField(auto_now_add=True)
-    success = models.BooleanField()
+    success = models.BooleanField(default=False)
     reason = models.CharField(max_length=255, blank=True, help_text="redeemed")
     raw_payload = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return self.token
-
-
-

@@ -354,7 +354,6 @@ class EventAdmin(admin.ModelAdmin):
         ),
     )
 
-
     actions = [make_published, make_unpublished, export_as_csv]
 
     def display_capacity(self, obj):

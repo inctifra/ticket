@@ -21,11 +21,10 @@ class EventPermission(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["user","event", "permission"],
+                fields=["user", "event", "permission"],
                 name="unique_event_user_permission",
             ),
         ]
 
     def __str__(self):
         return self.get_permission_display()
-

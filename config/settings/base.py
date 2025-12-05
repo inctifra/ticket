@@ -93,6 +93,7 @@ TENANT_APPS = (
     "ticketless.tickets",
     "ticketless.management",
     "ticketless.dashboard.tenant.profiles",
+    # "ticketless.api",
 )
 
 

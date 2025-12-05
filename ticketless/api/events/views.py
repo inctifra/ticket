@@ -63,6 +63,7 @@ class AdminProcessEventRequestView(View):
                 schema_name=form.cleaned_data.get("subdomain"),
                 name=form.cleaned_data.get("subdomain"),
                 owner=client,
+                manager=request.user,
             )
             tenant.save()
             domain = Domain(

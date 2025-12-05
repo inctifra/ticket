@@ -114,9 +114,7 @@ def _validate_permissions(permissions: list[str]) -> None:
 
 
 def assign_event_scanning_permission(
-    event,
-    profiles: Profile | QuerySet,
-    permissions: str | list[str]
+    event, profiles: Profile | QuerySet, permissions: str | list[str]
 ):
     """
     Assign event-specific permission(s) to one or multiple Profile instances
@@ -139,9 +137,7 @@ def assign_event_scanning_permission(
     for profile in profiles:
         for perm in permissions:
             EventPermission.objects.get_or_create(
-                user=profile.user,
-                event=event,
-                permission=perm
+                user=profile.user, event=event, permission=perm
             )
 
         # Update role if not already 'S'
