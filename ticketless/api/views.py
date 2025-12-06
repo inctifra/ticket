@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions
 from rest_framework import status
@@ -17,13 +18,29 @@ from ticketless.tickets.models import Event
 from ticketless.tickets.models import Ticket
 from ticketless.tickets.serializer import EventSerializer
 from ticketless.users.api.serializers import UserSerializer
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework import status
 
 
-class TenantListView(ListAPIView):
-    permission_classes = [permissions.AllowAny]
-    authentication_classes = [TenantHeaderAuthentication]
+class TenantListView(ListAPIView, APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     queryset = Client.objects.all()
     serializer_class = ClientModelSerializer
+
+    def post(self, request: Request, *args, **kwargs):
+        data = request.data
+        try:
+            instance = get_object_or_404(Client, schema_name=data.get("schema"))
+        except Client.DoesNotExist:
+            return Response(
+                {"detail": "The requested tenant could not be found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = self.serializer_class(instance, context={"request": request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @extend_schema(exclude=True)

@@ -34,6 +34,8 @@ urlpatterns = [
     path("select2/", include("django_select2.urls")),
 ]
 
+urlpatterns += [path("__reload__/", include("django_browser_reload.urls"))]
+
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
     # these url in browser to see how these error pages look like.
@@ -54,7 +56,7 @@ if settings.DEBUG:
             kwargs={"exception": Exception("Page not Found")},
         ),
         path("500/", default_views.server_error),
-        path("__reload__/", include("django_browser_reload.urls")),
+        # path("__reload__/", include("django_browser_reload.urls")),
         # Static file serving when using Gunicorn +
         # Uvicorn for local web socket development
         *staticfiles_urlpatterns(),

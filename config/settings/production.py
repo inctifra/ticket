@@ -141,3 +141,10 @@ CACHES = {
         },
     },
 }
+
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://ticket.ipvs.cloud",
+]
