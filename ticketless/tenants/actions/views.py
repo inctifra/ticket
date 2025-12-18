@@ -11,7 +11,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.text import slugify
 from django.views.decorators.http import require_POST
-from weasyprint import HTML
+# from weasyprint import HTML
 
 from config.settings.base import env
 from ticketless.dashboard.tenant.forms import AssignScanningPermissionForm
@@ -106,28 +106,28 @@ def load_paystack_payment_key(request):
 
 
 def download_ticket_view(request, order_item_id):
-    item = get_object_or_404(OrderItem, id=order_item_id)
-    ticket = create_or_retrieve_ticket_for_order(order_item_id)
-    qr_image_base64 = ""
-    if ticket.qr_code:
-        with ticket.qr_code.open("rb") as f:
-            qr_image_base64 = base64.b64encode(f.read()).decode("utf-8")
-    html_string = render_to_string(
-        "tenants/tickets/ticket_template.html",
-        {"order_item": item, "ticket": ticket, "qr_image_base64": qr_image_base64},
-    )
+    # item = get_object_or_404(OrderItem, id=order_item_id)
+    # ticket = create_or_retrieve_ticket_for_order(order_item_id)
+    # qr_image_base64 = ""
+    # if ticket.qr_code:
+    #     with ticket.qr_code.open("rb") as f:
+    #         qr_image_base64 = base64.b64encode(f.read()).decode("utf-8")
+    # html_string = render_to_string(
+    #     "tenants/tickets/ticket_template.html",
+    #     {"order_item": item, "ticket": ticket, "qr_image_base64": qr_image_base64},
+    # )
 
-    pdf_file = BytesIO()
-    HTML(string=html_string).write_pdf(pdf_file)
-    pdf_file.seek(0)
-    pdf_data = pdf_file.read()
+    # pdf_file = BytesIO()
+    # HTML(string=html_string).write_pdf(pdf_file)
+    # pdf_file.seek(0)
+    # pdf_data = pdf_file.read()
 
-    filename = f"ticket-{slugify(item.ticket_type.event.title)}.pdf"
-    if not ticket.sent_mail:
-        send_ticket_email(item, pdf_data, ticket, filename)
-    response = HttpResponse(pdf_data, content_type="application/pdf")
-    response["Content-Disposition"] = f'attachment; filename="{filename}"'
-    return response
+    # filename = f"ticket-{slugify(item.ticket_type.event.title)}.pdf"
+    # if not ticket.sent_mail:
+    #     send_ticket_email(item, pdf_data, ticket, filename)
+    # response = HttpResponse(pdf_data, content_type="application/pdf")
+    # response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return HttpResponse("Ticket download is currently disabled.", content_type="text/plain")
 
 
 @login_required
