@@ -3,7 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import QuerySet
 from django.http import JsonResponse
-from django.urls import reverse
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import DetailView
@@ -55,17 +56,19 @@ user_redirect_view = UserRedirectView.as_view()
 
 class AjaxLoginView(LoginView):
     form_class = LoginForm
+    redirect_authenticated_user = True
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request=request)
-        if not form.is_valid():
-            return JsonResponse({"errors": form.errors}, status=400)
+    def form_valid(self, form):
+        # This logs in the authenticated user
+        self.request.session.set_expiry(0)
+        form.login(self.request)
+        return redirect(self.get_success_url())
 
-        email = form.cleaned_data.get("email")
-        password = form.cleaned_data.get("password")
-        user = User.objects.first()
-        form.login()
-        return JsonResponse({"success": True, "redirect_url": "/dashboard/"})
+    def form_invalid(self, form):
+        return JsonResponse({"success": False, "errors": form.errors}, status=400)
+
+    def get_success_url(self):
+        return reverse_lazy("tenants:dashboard:home")
 
 
 ajax_login_view = AjaxLoginView.as_view()

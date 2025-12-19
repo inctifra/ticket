@@ -206,3 +206,15 @@ DJOSER = {
     "TOKEN_MODEL": None,
     # other settings
 }
+
+# ticket.ipvs.cloud
+# CORS_ALLOW_ALL_ORIGINS = True
+
+# # CSRF
+# CSRF_TRUSTED_ORIGINS = [
+#     "https://ticket.ipvs.cloud",
+#     "https://*.ticket.ipvs.cloud",
+# ]
+
+# CSRF_COOKIE_DOMAIN = ".ticket.ipvs.cloud"
+# SESSION_COOKIE_DOMAIN = ".ticket.ipvs.cloud"

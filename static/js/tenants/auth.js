@@ -1,6 +1,7 @@
 import $ from "jquery";
 import { getApiWithHeaders as apiWithHeaders } from "../libs/axios";
-
+import { setupAjaxForm } from "../libs/handler";
+import { showToast } from "../libs/toast";
 
 $(async function () {
   const { Modal } = await import("bootstrap");
@@ -15,24 +16,18 @@ $(async function () {
     modal.show();
   });
 
-  const fm = loginModal.find("form[method=POST]");
-
-  fm.on("submit", async function (event) {
-    event.preventDefault();
-    const fd = new FormData($(this).get(0));
-     const url = $(this).attr("action");
-    console.log(Object.fromEntries(fd));
-       const csrf = document.querySelector("[name=csrfmiddlewaretoken]").value;
-    try {
-        const { data } = await apiWithHeaders({
-          "Content-Type": "multipart/form-data",
-        }).post(url, fd);
-        console.log(data)
-      } catch (error) {
-        console.log(error)
-      }
-      finally{
-
-      }
+  setupAjaxForm("#loginModal form[method=POST]", {
+    onSuccess: (data, formValues, form) => {
+      showToast({
+        message: "Authentication successful",
+      });
+    },
+    onError: function (data, formValues, form) {
+      console.log(data);
+      showToast({
+        message: "Authentication failed",
+        type: "error",
+      });
+    },
   });
 });

@@ -7,7 +7,7 @@ from apps.events.models import EventLaunchRequest
 from apps.tenants.models import Client
 
 
-@method_decorator(login_required(login_url="/"), name="dispatch")
+@method_decorator(login_required, name="dispatch")
 class HomeView(TemplateView):
     template_name = "pages/dashboard/pages/home.html"
 

@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import HttpRequest, JsonResponse
 from collections import Counter
 
 from django.shortcuts import get_object_or_404
@@ -8,7 +8,7 @@ from apps.events.forms import EventLaunchRequestUpdateForm
 from apps.events.models import EventLaunchRequest
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from tenant_users.tenants.tasks import provision_tenant
+from apps.tenants.models import Client, Domain
 from ifidel.users.models import User
 from django_tenants.utils import tenant_context
 
@@ -26,11 +26,11 @@ def event_status_chart(request):
     return JsonResponse({"labels": chart_labels, "data": chart_data})
 
 
-@method_decorator(login_required(login_url="/"), name="dispatch")
+@method_decorator(login_required, name="dispatch")
 class AdminProcessEventRequestView(View):
     form_class = EventLaunchRequestUpdateForm
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, **kwargs):
         event_request = get_object_or_404(
             EventLaunchRequest,
             id=kwargs.get("event_request_pk"),
@@ -45,7 +45,7 @@ class AdminProcessEventRequestView(View):
         if not form.is_valid():
             return JsonResponse(form.errors, safe=False, status=400)
 
-        event_request = form.save()
+        event_request: EventLaunchRequest = form.save()
 
         client, created = User.objects.get_or_create(
             email=form.cleaned_data.get("email"),
@@ -59,25 +59,23 @@ class AdminProcessEventRequestView(View):
             event_request.managed_by = request.user.profile
             event_request.save()
         try:
-            tenant, domain = provision_tenant(
-                form.cleaned_data.get("full_name"),
-                form.cleaned_data.get("subdomain"),
-                client,
-                tenant_type="tenant_type"
+            tenant = Client(
+                name=event_request.full_name,
+                schema_name=event_request.subdomain,
+                manager=event_request.managed_by.user,
+                owner=client,
             )
-            with tenant_context(tenant):
-                User.objects.create_user(
-                    email=form.cleaned_data.get("email"),
-                    password=form.cleaned_data.get("password", "phone")
-                )
-                client.profile.save()
+            tenant.save()
+            domain = Domain()
+            domain.tenant = tenant
+            domain.domain = f"{tenant.schema_name}.localhost"
+            domain.is_primary = True
+            domain.save()
+
         except (Exception, ValueError) as e:
             return JsonResponse({"details": str(e)}, safe=False, status=400)
-
         return JsonResponse(
             {"detail": f"Updated to status {event_request.get_status_display()}"},
             safe=False,
             status=200,
         )
-
-

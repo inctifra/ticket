@@ -61,21 +61,18 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # APPS
 # ------------------------------------------------------------------------------
-DJANGO_APPS = [
+SHARED_APPS = [
     "django_tenants",
-    "tenant_users.tenants",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
-    "tenant_users.permissions",
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
     "django.contrib.admin",
     "django.forms",
-]
-THIRD_PARTY_APPS = [
+
     "crispy_forms",
     "crispy_bootstrap5",
     "allauth",
@@ -93,10 +90,8 @@ THIRD_PARTY_APPS = [
     "djoser",
     "rest_framework_simplejwt",
     "widget_tweaks",
-    "django_extensions"
-]
+    "django_extensions",
 
-LOCAL_APPS = [
     "ifidel.users",
     "apps.tenants",
     "apps.events",
@@ -105,12 +100,8 @@ LOCAL_APPS = [
     "apps.shared",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-SHARED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 TENANT_APPS = [
-    "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "tenant_users.permissions",
     "apps.tickets",
     "apps.dashboard.tenant",
 ]
@@ -121,13 +112,7 @@ INSTALLED_APPS = list(SHARED_APPS) + [
 
 TENANT_MODEL = "tenants.Client"
 TENANT_DOMAIN_MODEL = "tenants.Domain"
-SHOW_PUBLIC_IF_NO_TENANT_FOUND = True
-TENANT_USERS_DOMAIN = "localhost"
-SESSION_COOKIE_DOMAIN = ".localhost"
-TENANT_USERS_PERMS_QUERYSET = (
-    "tenant_users.permissions.utils.get_optimized_tenant_perms_queryset"
-)
-TENANT_USERS_ACCESS_ERROR_MESSAGE = "Custom access denied message."
+
 # MIGRATIONS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
@@ -138,7 +123,6 @@ MIGRATION_MODULES = {"sites": "ifidel.contrib.sites.migrations"}
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
-    "tenant_users.permissions.backend.UserBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
@@ -172,7 +156,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
+    # MUST be first
     "django_tenants.middleware.main.TenantMainMiddleware",
+
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -181,13 +167,20 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "tenant_users.tenants.middleware.TenantAccessMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    # ✅ SAFE replacement
+    "apps.core.middleware.SafeTenantAccessMiddleware",
+
     "allauth.account.middleware.AccountMiddleware",
+
+    # DEV ONLY
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+
     "apps.tenants.middleware.CurrentUserMiddleware",
 ]
+
 
 # STATIC
 # ------------------------------------------------------------------------------

@@ -7,11 +7,10 @@ from django.db.models import CharField
 from django.db.models import EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from tenant_users.tenants.models import UserProfile
 from .managers import UserManager
 
 
-class User(UserProfile):
+class User(AbstractUser, PermissionsMixin):
     """
     Default custom user model for ifidel.
     If adding fields that need to be filled at user signup,
@@ -19,6 +18,11 @@ class User(UserProfile):
     """
     name = CharField(_("Name of User"), blank=True, max_length=255)
     email = EmailField(_("email address"), unique=True)
+    username = None
+
+    objects = UserManager()
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
 
 
     def get_absolute_url(self) -> str:
